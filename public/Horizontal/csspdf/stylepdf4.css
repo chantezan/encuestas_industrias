@@ -1,0 +1,101 @@
+body {
+  margin: 0 auto; 
+  color: #001028;
+  background: #FFFFFF; 
+  font-family: Courier, sans-serif; 
+  font-size: 11px; 
+  font-family: Courier;
+}
+
+header {
+  padding: 10px 0;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+#logo {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#embarque {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 2.4em;
+  font-weight: bold;
+}
+
+#logo img {
+  width: 90px;
+}
+
+h1 {
+  border-top: 1px solid  #5D6975;
+  border-bottom: 1px solid  #5D6975;
+  color: #5D6975;
+  font-size: 2.4em;
+  line-height: 1.4em;
+  font-weight: normal;
+  text-align: center;
+  margin: 0 0 20px 0;
+  width: 100%;
+}
+
+footer {
+  color: #5D6975;
+  width: 100%;
+  height: 30px;
+  font-size: 1em;
+  position: absolute;
+  bottom: 0;
+  border-top: 1px solid #C1CED9;
+  padding: 0px 0;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  table-layout:auto;
+  margin-bottom: 20px;
+  font-size: 0.8em;
+  border: 1px solid gray;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  text-align: center;
+  border: 0.8px solid #C1CED9;
+}
+
+table th {
+  padding: 5px 5px;
+  color: #5D6975;
+  border-bottom: 1px solid #C1CED9;
+  white-space: nowrap;        
+  font-weight: normal;
+  vertical-align: middle;
+
+}
+
+#resumen{
+  width: 90%;
+  table-layout:auto;
+
+  margin-bottom: 20px;
+  font-size: 1em;
+
+}
+
+
+#resumen td{
+  text-align: left;
+  border: 0px solid #C1CED9;
+}
+
+#resumen td span {
+  font-weight: bold;
+  display: inline-block;
+  width: 130px;
+  text-align: right;
+}
