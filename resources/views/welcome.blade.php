@@ -285,7 +285,7 @@
                                 var total = profesor.val5 + profesor.val4 + profesor.val3 + profesor.val2 + profesor.val1;
                                 var promedio = profesor.val5 * 5 + profesor.val4 * 4 + profesor.val3 * 3 + profesor.val2 * 2 + profesor.val1 * 1;
                                 //console.log(profesor);
-                                if (total == 0)ddddd
+                                if (total == 0)
                                     promedio = "no hay respuestas";
                                 else {
                                     promedio = (promedio / total).toFixed(0);
