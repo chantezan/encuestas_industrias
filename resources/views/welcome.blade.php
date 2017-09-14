@@ -56,7 +56,7 @@
         <div class="col-md-12">
             <div class="panel panel-color panel-inverse">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Resultados {{action('SubirEncuestaController@index')}}</h3>
+                    <h3 class="panel-title">Resultados</h3>
                 </div>
                 <div class="panel-body">
                     <div class="row">
