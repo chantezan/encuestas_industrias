@@ -11,12 +11,16 @@
 |
 */
 
-Route::get('/', "GraficosController@index");
-Route::get('/docente', "GraficosController@logeado");
-Route::get('/login', "LoginController@index");
-Route::post('/entrar', "LoginController@entrar");
-Route::get('rellenar','ExcelController@rellenarUsuarios');
+Route::group(['middleware' => 'web'],function(){
+    Route::get('/', "GraficosController@index");
+    Route::get('/docente', "GraficosController@logeado");
+    Route::get('/login', "LoginController@index");
+    Route::post('/entrar', "LoginController@entrar");
+    Route::get('rellenar','ExcelController@rellenarUsuarios');
 
-Route::get('subir','SubirEncuestaController@index');
+    Route::get('subir','SubirEncuestaController@index');
 
-Route::post('guardar_excel','SubirEncuestaController@guardarExcel');
+    Route::post('guardar_excel','SubirEncuestaController@guardarExcel');
+
+});
+
