@@ -11,7 +11,7 @@
 |
 */
 
-
+//hola
     Route::get('/', "GraficosController@index");
     Route::get('/docente', "GraficosController@logeado");
     Route::get('/login', "LoginController@index");
