@@ -21,7 +21,7 @@ class ExcelController extends Controller
         $seccion = null;
         $tipo = null;
 
-        $rows = Excel::load('Equipos_docentes.xlsx')->get();
+        $rows = Excel::load('Equipos_Docentes.xlsx')->get();
         foreach($rows as $row) {
 
             if($row['tipo_curso'] != null){

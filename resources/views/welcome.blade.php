@@ -195,7 +195,8 @@
 
 
         $("[name='curso']").change(function(){
-            $("[name='seccion'] ").html("");
+            $("[name='seccion'] ").html("");respuestas
+            $("#respuestas").html("");
             var secciones = $("[name='curso'] option:selected").data('secciones');
             $("[name='seccion'] ").append('<option value="">Seleccione una unidad</option>');
             secciones.forEach(function (item,index) {
