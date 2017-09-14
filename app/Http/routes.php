@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['middleware' => 'web'],function(){
+
     Route::get('/', "GraficosController@index");
     Route::get('/docente', "GraficosController@logeado");
     Route::get('/login', "LoginController@index");
@@ -22,5 +22,5 @@ Route::group(['middleware' => 'web'],function(){
 
     Route::post('/guardar_excel','SubirEncuestaController@guardarExcel');
 
-});
+
 

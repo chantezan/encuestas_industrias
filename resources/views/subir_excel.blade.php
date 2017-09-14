@@ -56,31 +56,31 @@
                 </div>
                 <div class="panel-body">
                     <form enctype="multipart/form-data" action="{{action('SubirEncuestaController@guardarExcel')}}" method="post">
-                <div class="col-md-6">
+                        <div class="col-md-6">
 
-                                <div class="form-group">
-                                    <label class="col-md-5 control-label">Cursos</label>
-                                    <div id="camaras_container" class="col-md-7">
-                                        <select class='select2 form-control input-sm' name='curso'>
-                                            <option value=''>Selecciona un curso</option>
-                                            @foreach($cursos as $curso)
-                                                <option data-secciones='{{$curso->secciones}}' value='{{ $curso->id }}'>{{ $curso->codigo }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                            <div class="form-group">
+                                <label class="col-md-5 control-label">Cursos</label>
+                                <div id="camaras_container" class="col-md-7">
+                                    <select class='select2 form-control input-sm' name='curso'>
+                                        <option value=''>Selecciona un curso</option>
+                                        @foreach($cursos as $curso)
+                                            <option data-secciones='{{$curso->secciones}}' value='{{ $curso->id }}'>{{ $curso->codigo }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-5 control-label">Secciones</label>
-                                    <div id="camaras_container" class="col-md-7">
-                                        <select class='select2 form-control input-sm' name='seccion'>
-                                            <option value=''>Selecciona una seccion</option>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-5 control-label">Secciones</label>
+                                <div id="camaras_container" class="col-md-7">
+                                    <select class='select2 form-control input-sm' name='seccion'>
+                                        <option value=''>Selecciona una seccion</option>
 
-                                        </select>
-                                    </div>
+                                    </select>
                                 </div>
-                </div>
+                            </div>
+                        </div>
 
-                <div class="col-md-6">
+                        <div class="col-md-6">
 
 
 
@@ -91,11 +91,11 @@
                                 </div>
                             </div>
 
-                    <div class="col-md-3 col-md-offset-9">
-                        <button type="submit" class="btn btn-success waves-effect waves-light pull-right">Subir Excel</button>
-                    </div>
+                            <div class="col-md-3 col-md-offset-9">
+                                <button type="submit" class="btn btn-success waves-effect waves-light pull-right">Subir Excel</button>
+                            </div>
 
-                </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -161,10 +161,10 @@
 <script>
     jQuery(document).ready(function() {
         @if($guardado)
-            swal("Guardado", "{{$guardado}}", "success");
+        swal("Guardado", "{{$guardado}}", "success");
         @endif
         @if($fallo)
-            swal("Error", "{{$fallo}}", "error");
+        swal("Error", "{{$fallo}}", "error");
         @endif
 
 
@@ -173,7 +173,7 @@
             var secciones = $("[name='curso'] option:selected").data('secciones');
             $("[name='seccion'] ").append('<option value="">Seleccione una unidad</option>');
             secciones.forEach(function (item,index) {
-                    $("[name='seccion'] ").append('<option value='+item.id+'>'+item.numero+'</option>');
+                $("[name='seccion'] ").append('<option value='+item.id+'>'+item.numero+'</option>');
             });
 
         });

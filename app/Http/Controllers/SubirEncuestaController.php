@@ -23,7 +23,7 @@ class SubirEncuestaController extends Controller
     function normaliza ($cadena){
         //$originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
 //ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
-  //      $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuy
+        //      $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuy
 //bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
         $some_special_chars = array("á", "é", "í", "ó", "ú", "Á", "É", "Í", "Ó", "Ú", "ñ", "Ñ"," ",",","¿","?","“","”","'");
         $replacement_chars  = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", "n", "N","_","","","","","","");
@@ -96,7 +96,7 @@ class SubirEncuestaController extends Controller
                 $respuesta->id_seccion = $seccion->id;
                 $respuesta->id_pregunta = $pregunta->id;
                 if($pregunta->profesor){
-                        $nombre_aux = str_replace('el/la_profesor/a','el_profesor',$nombre_aux);
+                    $nombre_aux = str_replace('el/la_profesor/a','el_profesor',$nombre_aux);
                     if(!array_key_exists($nombre_aux,$row->toArray())){
                         $nombre_aux = $this->normaliza($pregunta->nombre);
                         $nombre_aux = str_replace('el/la_profesor/a','la_profesora',$nombre_aux);
