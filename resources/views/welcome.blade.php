@@ -636,6 +636,7 @@
                                     });
                                     var total = val5*1 + val4*1 + val3*1 + val2*1;
                                     var promedio = val5 * 4 + val4 * 3 + val3 * 2 + val2 * 1 + val1 * 0;
+                                    console.log(total);
                                     if (total == 0)
                                         promedio = "no hay respuestas";
                                     else {
