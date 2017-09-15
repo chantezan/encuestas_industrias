@@ -156,7 +156,7 @@
             $("[name='seccion']").html("");
             $("#respuestas").html("");
             var secciones = $("[name='curso'] option:selected").data('secciones');
-            console.log(secciones);
+            //console.log(secciones);
             $("[name='seccion'] ").append('<option value="">Seleccione una unidad</option>');
                 secciones.forEach(function (item,index) {
                 $("[name='seccion'] ").append('<option value='+item.id+'>'+item.numero+'</option>');
@@ -412,7 +412,7 @@
                                         promedio = (promedio / total).toFixed(0);
                                         //console.log(total);
                                         promedio1 = _.find(escala1, {valor: parseInt(promedio)});
-
+                                        console.log(escala1);
                                         promedio = promedio1.respuesta;
                                     }
                                     var aux = pregunta.nombre;
@@ -571,7 +571,8 @@
                                         promedio = (promedio / total).toFixed(0);
                                         //console.log(promedio);
                                         var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
-
+                                        console.log(promedio);
+                                        console.log(escala1);
                                         promedio = promedio1.respuesta;
                                     }
                                     var aux = pregunta.nombre;
