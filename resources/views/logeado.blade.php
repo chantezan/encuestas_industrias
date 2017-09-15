@@ -234,7 +234,7 @@
                     if ($("[name='curso'] option:selected").data('tipo') == 1 || $("[name='curso'] option:selected").data('tipo') == 3) {
 
                         preguntas.forEach(function (pregunta, index) {
-                            if (pregunta.profesor) {
+                            if (pregunta.profesor==1) {
                                 profesores.forEach(function (profesor, index2) {
 
                                     var val5 = 0;
@@ -245,33 +245,33 @@
                                     respuestas.forEach(function (respuesta, index3) {
                                         if (respuesta.id_pregunta == pregunta.id && respuesta.id_user == profesor.id) {
                                             if (respuesta.respuesta == "Muy de acuerdo") {
-                                                val5 += respuesta.total;
+                                                val5 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "De acuerdo") {
-                                                val4 += respuesta.total;
+                                                val4 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
-                                                val3 += respuesta.total;
+                                                val3 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "En desacuerdo") {
-                                                val2 += respuesta.total;
+                                                val2 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "Muy en desacuerdo") {
-                                                val1 += respuesta.total;
+                                                val1 += respuesta.total*1;
                                             }
                                         }
                                     });
                                     if (index == 0) {
-                                        profesor.val5 = val5;
-                                        profesor.val4 = val4;
-                                        profesor.val3 = val3;
-                                        profesor.val2 = val2;
-                                        profesor.val1 = val1;
+                                        profesor.val5 = val5*1;
+                                        profesor.val4 = val4*1;
+                                        profesor.val3 = val3*1;
+                                        profesor.val2 = val2*1;
+                                        profesor.val1 = val1*1;
                                     } else {
-                                        profesor.val5 += val5;
-                                        profesor.val4 += val4;
-                                        profesor.val3 += val3;
-                                        profesor.val2 += val2;
-                                        profesor.val1 += val1;
+                                        profesor.val5 += val5*1;
+                                        profesor.val4 += val4*1;
+                                        profesor.val3 += val3*1;
+                                        profesor.val2 += val2*1;
+                                        profesor.val1 += val1*1;
                                     }
 
-                                    var total = val5 + val4 + val3 + val2 + val1;
+                                    var total = val5*1 + val4*1 + val3*1 + val2*1 + val1*1;
                                     var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
                                     if (total == 0)
                                         promedio = "no hay respuestas";
@@ -383,24 +383,24 @@
                                     respuestas.forEach(function (respuesta, index3) {
                                         if (respuesta.id_pregunta == pregunta.id) {
                                             if (respuesta.respuesta == "Mucha") {
-                                                total_5 += respuesta.total;
-                                                val5 += respuesta.total;
+                                                total_5 += respuesta.total*1;
+                                                val5 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "Bastante") {
-                                                total_4 += respuesta.total;
-                                                val4 += respuesta.total;
+                                                total_4 += respuesta.total*1;
+                                                val4 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "Poco") {
-                                                total_3 += respuesta.total;
-                                                val3 += respuesta.total;
+                                                total_3 += respuesta.total*1;
+                                                val3 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "Nada") {
-                                                total_2 += respuesta.total;
-                                                val2 += respuesta.total;
+                                                total_2 += respuesta.total*1;
+                                                val2 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "No se implementó") {
-                                                total_1 += respuesta.total;
-                                                val1 += respuesta.total;
+                                                total_1 += respuesta.total*1;
+                                                val1 += respuesta.total*1;
                                             }
                                         }
                                     });
-                                    var total = val5 + val4 + val3 + val2;
+                                    var total = val5*1 + val4*1 + val3*1 + val2*1;
                                     var promedio = val5 * 4 + val4 * 3 + val3 * 2 + val2 * 1 + val1 * 0;
                                     if (total == 0)
                                         promedio = "no hay respuestas";
@@ -438,7 +438,7 @@
                                     $('#n' + pregunta.id).parent().hide();
                                 }
                                 if (index == 6) {
-                                    var total = total_5 + total_4 + total_3 + total_2;
+                                    var total = total_5*1 + total_4*1 + total_3*1 + total_2*1;
                                     var promedio = total_5 * 4 + total_4 * 3 + total_3 * 2 + total_2 * 1;
                                     if (total == 0)
                                         promedio = "no hay respuestas";
@@ -490,24 +490,24 @@
                                     respuestas.forEach(function (respuesta, index3) {
                                         if (respuesta.id_pregunta == pregunta.id) {
                                             if (respuesta.respuesta == "Muy de acuerdo") {
-                                                total_5 += respuesta.total;
-                                                val5 += respuesta.total;
+                                                total_5 += respuesta.total*1;
+                                                val5 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "De acuerdo") {
-                                                total_4 += respuesta.total;
-                                                val4 += respuesta.total;
+                                                total_4 += respuesta.total*1;
+                                                val4 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
-                                                total_3 += respuesta.total;
-                                                val3 += respuesta.total;
+                                                total_3 += respuesta.total*1;
+                                                val3 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "En desacuerdo") {
-                                                total_2 += respuesta.total;
-                                                val2 += respuesta.total;
+                                                total_2 += respuesta.total*1;
+                                                val2 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "Muy en desacuerdo") {
-                                                total_1 += respuesta.total;
-                                                val1 += respuesta.total;
+                                                total_1 += respuesta.total*1;
+                                                val1 += respuesta.total*1;
                                             }
                                         }
                                     });
-                                    var total = val5 + val4 + val3 + val2 + val1;
+                                    var total = val5*1 + val4*1 + val3*1 + val2*1 + val1*1;
                                     var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
                                     if (total == 0)
                                         promedio = "no hay respuestas";
@@ -549,7 +549,7 @@
                                     $('#n' + pregunta.id).parent().hide()
                                 }
                                 if (index == 8) {
-                                    var total = total_5 + total_4 + total_3 + total_2 + total_1;
+                                    var total = total_5*1 + total_4*1 + total_3*1 + total_2*1 + total_1*1;
                                     var promedio = total_5 * 5 + total_4 * 4 + total_3 * 3 + total_2 * 2 + total_1;
                                     if (total == 0)
                                         promedio = "no hay respuestas";
@@ -606,33 +606,33 @@
                                         respuestas.forEach(function (respuesta, index3) {
                                             if (respuesta.id_pregunta == pregunta.id && respuesta.id_user == auxiliar.id) {
                                                 if (respuesta.respuesta == "Muy de acuerdo") {
-                                                    val5 += respuesta.total;
+                                                    val5 += respuesta.total*1;
                                                 } else if (respuesta.respuesta == "De acuerdo") {
-                                                    val4 += respuesta.total;
+                                                    val4 += respuesta.total*1;
                                                 } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
-                                                    val3 += respuesta.total;
+                                                    val3 += respuesta.total*1;
                                                 } else if (respuesta.respuesta == "En desacuerdo") {
-                                                    val2 += respuesta.total;
+                                                    val2 += respuesta.total*1;
                                                 } else if (respuesta.respuesta == "Muy en desacuerdo") {
-                                                    val1 += respuesta.total;
+                                                    val1 += respuesta.total*1;
                                                 }
                                             }
                                         });
                                         if (index == 8) {
-                                            auxiliar.val5 = val5;
-                                            auxiliar.val4 = val4;
-                                            auxiliar.val3 = val3;
-                                            auxiliar.val2 = val2;
-                                            auxiliar.val1 = val1;
+                                            auxiliar.val5 = val5*1;
+                                            auxiliar.val4 = val4*1;
+                                            auxiliar.val3 = val3*1;
+                                            auxiliar.val2 = val2*1;
+                                            auxiliar.val1 = val1*1;
                                         } else {
-                                            auxiliar.val5 += val5;
-                                            auxiliar.val4 += val4;
-                                            auxiliar.val3 += val3;
-                                            auxiliar.val2 += val2;
-                                            auxiliar.val1 += val1;
+                                            auxiliar.val5 += val5*1;
+                                            auxiliar.val4 += val4*1;
+                                            auxiliar.val3 += val3*1;
+                                            auxiliar.val2 += val2*1;
+                                            auxiliar.val1 += val1*1;
                                         }
 
-                                        var total = val5 + val4 + val3 + val2 + val1;
+                                        var total = val5*1 + val4*1 + val3*1 + val2*1 + val1*1;
                                         var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
                                         if (total == 0)
                                             promedio = "no hay respuestas";
@@ -679,7 +679,7 @@
                                 if (index == 9) {
                                     auxiliares.forEach(function (auxiliar, index2) {
                                         var aux = "Dimensión Docencia Auxiliar de " + auxiliar.name;
-                                        var total = auxiliar.val5 + auxiliar.val4 + auxiliar.val3 + auxiliar.val2 + auxiliar.val1;
+                                        var total = auxiliar.val5*1 + auxiliar.val4*1 + auxiliar.val3*1 + auxiliar.val2*1 + auxiliar.val1*1;
                                         var promedio = auxiliar.val5 * 5 + auxiliar.val4 * 4 + auxiliar.val3 * 3 + auxiliar.val2 * 2 + auxiliar.val1 * 1;
                                         if (total == 0)
                                             promedio = "no hay respuestas";
