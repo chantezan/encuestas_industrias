@@ -150,48 +150,6 @@
 
 <script>
     jQuery(document).ready(function() {
-        var escala1 = [];
-        escala1.push({
-           respuesta : "Muy de acuerdo",
-           valor :5
-        });
-        escala1.push({
-            respuesta : "De acuerdo",
-            valor :4
-        });
-        escala1.push({
-            respuesta : "Ni de acuerdo ni en desacuerdo",
-            valor :3
-        });
-        escala1.push({
-            respuesta : "En desacuerdo",
-            valor :2
-        });
-        escala1.push({
-            respuesta : "Muy en desacuerdo",
-            valor :1
-        });
-        var escala2 = [];
-        escala2.push({
-            respuesta : "No se implementó",
-            valor : 0
-        });
-        escala2.push({
-            respuesta : "Mucha",
-            valor :4
-        });
-        escala2.push({
-            respuesta : "Bastante",
-            valor :3
-        });
-        escala2.push({
-            respuesta : "Poco",
-            valor :2
-        });
-        escala2.push({
-            respuesta : "Nada",
-            valor :1
-        });
 
 
         $("[name='curso']").change(function(){
@@ -208,6 +166,49 @@
         });
 
         $("[name='seccion']").change(function(){
+            var escala1 = [];
+            escala1.push({
+                respuesta : "Muy de acuerdo",
+                valor :5
+            });
+            escala1.push({
+                respuesta : "De acuerdo",
+                valor :4
+            });
+            escala1.push({
+                respuesta : "Ni de acuerdo ni en desacuerdo",
+                valor :3
+            });
+            escala1.push({
+                respuesta : "En desacuerdo",
+                valor :2
+            });
+            escala1.push({
+                respuesta : "Muy en desacuerdo",
+                valor :1
+            });
+            var escala2 = [];
+            escala2.push({
+                respuesta : "No se implementó",
+                valor : 0
+            });
+            escala2.push({
+                respuesta : "Mucha",
+                valor :4
+            });
+            escala2.push({
+                respuesta : "Bastante",
+                valor :3
+            });
+            escala2.push({
+                respuesta : "Poco",
+                valor :2
+            });
+            escala2.push({
+                respuesta : "Nada",
+                valor :1
+            });
+
             $("#respuestas").html("");
             var total_1 = 0;
             var total_2 = 0;
@@ -568,7 +569,7 @@
                                         promedio = "no hay respuestas";
                                     else {
                                         promedio = (promedio / total).toFixed(0);
-                                        console.log(promedio);
+                                        //console.log(promedio);
                                         var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
 
                                         promedio = promedio1.respuesta;
