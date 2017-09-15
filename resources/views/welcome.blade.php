@@ -569,13 +569,11 @@
                                     if (total == 0)
                                         promedio = "no hay respuestas";
                                     else {
-                                        console.log(promedio);
-                                        console.log(total);
+
                                         promedio = (promedio / total).toFixed(0);
                                         //console.log(promedio);
                                         var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
-                                        console.log(promedio);
-                                        console.log(escala1);
+
                                         promedio = promedio1.respuesta;
                                     }
                                     var aux = pregunta.nombre;
