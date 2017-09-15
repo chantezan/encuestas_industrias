@@ -231,7 +231,7 @@
                     if($("[name='curso'] option:selected").data('tipo') == 1 || $("[name='curso'] option:selected").data('tipo') == 3) {
 
                         preguntas.forEach(function (pregunta, index) {
-                            if (pregunta.profesor) {
+                            if (pregunta.profesor==1) {
                                 profesores.forEach(function (profesor, index2) {
 
                                     var val5 = 0;
@@ -526,7 +526,7 @@
                         });
                     } else {
                         preguntas.forEach(function (pregunta, index) {
-                            if (pregunta.profesor) {
+                            if (pregunta.profesor==1) {
                                 profesores.forEach(function (profesor, index2) {
 
                                     var val5 = 0;
