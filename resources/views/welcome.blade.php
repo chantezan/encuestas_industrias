@@ -603,7 +603,6 @@
                                         $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="n' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
 
-                                        $('#n' + profesor.id).parent().hide();
                                     }); // termina resumen de profesores
                                 }
                                 alert(index);
@@ -650,7 +649,7 @@
                                     $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
 
-                                    $('#n' + pregunta.id).parent().hide();
+
                                 }
                                 if (index == 7) {
                                     var total = total_5 + total_4 + total_3 + total_2;
