@@ -73,7 +73,7 @@ class CreateUsersTable extends Migration
 
         Schema::create('respuestas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('respuesta');
+            $table->string('respuesta',700);
             $table->integer('id_user')->unsigned()->nullable();
             $table->foreign('id_user')->references('id')->on('users');
             $table->integer('id_pregunta')->unsigned();

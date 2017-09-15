@@ -14,6 +14,7 @@
 //hola
     Route::get('/', "GraficosController@index");
     Route::get('/docente', "GraficosController@logeado");
+    Route::get('/seccion', "GraficosController@getSeccion");
     Route::get('/login', "LoginController@index");
     Route::post('/entrar', "LoginController@entrar");
     Route::get('/rellenar','ExcelController@rellenarUsuarios');

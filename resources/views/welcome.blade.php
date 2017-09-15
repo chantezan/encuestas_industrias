@@ -195,13 +195,15 @@
 
 
         $("[name='curso']").change(function(){
-            $("[name='seccion'] ").html("");respuestas
+            $("[name='seccion']").html("");
             $("#respuestas").html("");
             var secciones = $("[name='curso'] option:selected").data('secciones');
+            console.log(secciones);
             $("[name='seccion'] ").append('<option value="">Seleccione una unidad</option>');
-            secciones.forEach(function (item,index) {
-                $("[name='seccion'] ").append('<option data-profesores="'+item.profesores+'" data-auxiliares="'+item.auxiliares+'" data-respuestas="'+item.respuestas+'" value='+item.id+'>'+item.numero+'</option>');
+                secciones.forEach(function (item,index) {
+                $("[name='seccion'] ").append('<option value='+item.id+'>'+item.numero+'</option>');
             });
+            //$("select").select2();
 
         });
 
@@ -212,634 +214,642 @@
             var total_3 = 0;
             var total_4 = 0;
             var total_5 = 0;
-            var secciones = $("[name='curso'] option:selected").data('secciones');
-            var seccion = _.find(secciones, {id: parseInt($(this).val())});
-
+            
+            var seccion = $(this).val();
             var preguntas = $("[name='curso'] option:selected").data('preguntas');
-            var profesores = seccion.profesores;
-            var auxiliares = seccion.auxiliares_all;
-            var respuestas = seccion.respuestas;
+
             //console.log(preguntas);
+            $.ajax({
+                url: '{{action('GraficosController@getSeccion')}}',
+                data: 'seccion='+seccion,
+                success: function(data) {
+                    var profesores = data.profesores;
+                    var auxiliares = data.auxiliares_all;
+                    var respuestas = data.respuestas;
+                    //console.log(respuestas);
+                    if($("[name='curso'] option:selected").data('tipo') == 1 || $("[name='curso'] option:selected").data('tipo') == 3) {
 
-            if($("[name='curso'] option:selected").data('tipo') == 1 || $("[name='curso'] option:selected").data('tipo') == 3) {
+                        preguntas.forEach(function (pregunta, index) {
+                            if (pregunta.profesor) {
+                                profesores.forEach(function (profesor, index2) {
 
-                preguntas.forEach(function (pregunta, index) {
-                    if (pregunta.profesor) {
-                        profesores.forEach(function (profesor, index2) {
-
-                            var val5 = 0;
-                            var val4 = 0;
-                            var val3 = 0;
-                            var val2 = 0;
-                            var val1 = 0;
-                            respuestas.forEach(function (respuesta, index3) {
-                                if (respuesta.id_pregunta == pregunta.id && respuesta.id_user == profesor.id) {
-                                    if (respuesta.respuesta == "Muy de acuerdo") {
-                                        val5 += respuesta.total;
-                                    } else if (respuesta.respuesta == "De acuerdo") {
-                                        val4 += respuesta.total;
-                                    } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
-                                        val3 += respuesta.total;
-                                    } else if (respuesta.respuesta == "En desacuerdo") {
-                                        val2 += respuesta.total;
-                                    } else if (respuesta.respuesta == "Muy en desacuerdo") {
-                                        val1 += respuesta.total;
-                                    }
-                                }
-                            });
-                            if (index == 0) {
-                                profesor.val5 = val5;
-                                profesor.val4 = val4;
-                                profesor.val3 = val3;
-                                profesor.val2 = val2;
-                                profesor.val1 = val1;
-                            } else {
-                                profesor.val5 += val5;
-                                profesor.val4 += val4;
-                                profesor.val3 += val3;
-                                profesor.val2 += val2;
-                                profesor.val1 += val1;
-                            }
-
-                            var total = val5 + val4 + val3 + val2 + val1;
-                            var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
-                            if (total == 0)
-                                promedio = "no hay respuestas";
-                            else {
-                                promedio = (promedio / total).toFixed(0);
-
-                                var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
-
-                                promedio = promedio1.respuesta;
-                            }
-                            var aux = pregunta.nombre;
-                            aux = aux.replace("REEMPLAZAR", profesor.name);
-                            $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                '<div class="col-md-8"><div id="n' + profesor.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
-
-                            $('#n' + profesor.id + 'y' + pregunta.id).parent().hide();
-                        }); //terminan graficos profesores
-                    } else {
-                        if (index == 2) {
-                            profesores.forEach(function (profesor, index2) {
-                                var aux = "Dimension Comunicacional de " + profesor.name;
-                                var total = profesor.val5 + profesor.val4 + profesor.val3 + profesor.val2 + profesor.val1;
-                                var promedio = profesor.val5 * 5 + profesor.val4 * 4 + profesor.val3 * 3 + profesor.val2 * 2 + profesor.val1 * 1;
-                                //console.log(profesor);
-                                if (total == 0)
-                                    promedio = "no hay respuestas";
-                                else {
-                                    promedio = (promedio / total).toFixed(0);
-
-                                    var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
-
-                                    promedio = promedio1.respuesta;
-                                }
-
-                                $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                    '<div class="col-md-8"><div id="n' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
-
-                                $('#n' + profesor.id).parent().hide();
-                            }) // termina resumen de profesores
-                        }
-                        if (index >= 2 && index <= 5) {
-                            var val5 = 0;
-                            var val4 = 0;
-                            var val3 = 0;
-                            var val2 = 0;
-                            var val1 = 0;
-                            respuestas.forEach(function (respuesta, index3) {
-                                if (respuesta.id_pregunta == pregunta.id) {
-                                    if (respuesta.respuesta == "Mucha") {
-                                        total_5 += respuesta.total;
-                                        val5 += respuesta.total;
-                                    } else if (respuesta.respuesta == "Bastante") {
-                                        total_4 += respuesta.total;
-                                        val4 += respuesta.total;
-                                    } else if (respuesta.respuesta == "Poco") {
-                                        total_3 += respuesta.total;
-                                        val3 += respuesta.total;
-                                    } else if (respuesta.respuesta == "Nada") {
-                                        total_2 += respuesta.total;
-                                        val2 += respuesta.total;
-                                    } else if (respuesta.respuesta == "No se implementó") {
-                                        total_1 += respuesta.total;
-                                        val1 += respuesta.total;
-                                    }
-                                }
-                            });
-                            var total = val5 + val4 + val3 + val2;
-                            var promedio = val5 * 4 + val4 * 3 + val3 * 2 + val2 * 1 + val1 * 0;
-                            if (total == 0)
-                                promedio = "no hay respuestas";
-                            else {
-                                promedio = (promedio / total).toFixed(0);
-
-                                var promedio1 = _.find(escala2, {valor: parseInt(promedio)});
-
-                                promedio = promedio1.respuesta;
-                            }
-                            var aux = pregunta.nombre;
-
-                            $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
-
-                            $('#n' + pregunta.id).parent().hide();
-                        }
-                        if (index == 6) {
-                            var total = total_5 + total_4 + total_3 + total_2;
-                            var promedio = total_5 * 4 + total_4 * 3 + total_3 * 2 + total_2 * 1;
-                            if (total == 0)
-                                promedio = "no hay respuestas";
-                            else {
-                                promedio = (promedio / total).toFixed(0);
-
-                                var promedio1 = _.find(escala2, {valor: parseInt(promedio)});
-
-                                promedio = promedio1.respuesta;
-                            }
-                            var aux = "Resumen Dimension General";
-
-                            $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                '<div class="col-md-8"><div id="n" style="height:300px; width:100%"></div></div></div>');
-
-                            $('#n').parent().hide();
-                            total_5 = 0;
-                            total_4 = 0;
-                            total_3 = 0;
-                            total_2 = 0;
-                            total_1 = 0;
-
-                        }
-                        if (index >= 6 && index <= 7) {
-                            val5 = 0;
-                            val4 = 0;
-                            val3 = 0;
-                            val2 = 0;
-                            val1 = 0;
-                            respuestas.forEach(function (respuesta, index3) {
-                                if (respuesta.id_pregunta == pregunta.id) {
-                                    if (respuesta.respuesta == "Muy de acuerdo") {
-                                        total_5 += respuesta.total;
-                                        val5 += respuesta.total;
-                                    } else if (respuesta.respuesta == "De acuerdo") {
-                                        total_4 += respuesta.total;
-                                        val4 += respuesta.total;
-                                    } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
-                                        total_3 += respuesta.total;
-                                        val3 += respuesta.total;
-                                    } else if (respuesta.respuesta == "En desacuerdo") {
-                                        total_2 += respuesta.total;
-                                        val2 += respuesta.total;
-                                    } else if (respuesta.respuesta == "Muy en desacuerdo") {
-                                        total_1 += respuesta.total;
-                                        val1 += respuesta.total;
-                                    }
-                                }
-                            });
-                            var total = val5 + val4 + val3 + val2 + val1;
-                            var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
-                            if (total == 0)
-                                promedio = "no hay respuestas";
-                            else {
-                                promedio = (promedio / total).toFixed(0);
-                                //console.log(total);
-                                promedio1 = _.find(escala1, {valor: parseInt(promedio)});
-
-                                promedio = promedio1.respuesta;
-                            }
-                            var aux = pregunta.nombre;
-
-                            $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
-
-                            $('#n' + pregunta.id).parent().hide()
-                        }
-                        if (index == 8) {
-                            var total = total_5 + total_4 + total_3 + total_2 + total_1;
-                            var promedio = total_5 * 5 + total_4 * 4 + total_3 * 3 + total_2 * 2 + total_1;
-                            if (total == 0)
-                                promedio = "no hay respuestas";
-                            else {
-                                promedio = (promedio / total).toFixed(0);
-
-                                var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
-
-                                promedio = promedio1.respuesta;
-                            }
-                            var aux = "Resumen Dimensión Evaluaciones";
-
-                            $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                '<div class="col-md-8"><div id="t" style="height:300px; width:100%"></div></div></div>');
-
-                            $('#t').parent().hide();
-                        }
-                        if (index >= 8 && index <= 9) {
-
-                            auxiliares.forEach(function (auxiliar, index2) {
-
-                                var val5 = 0;
-                                var val4 = 0;
-                                var val3 = 0;
-                                var val2 = 0;
-                                var val1 = 0;
-                                respuestas.forEach(function (respuesta, index3) {
-                                    if (respuesta.id_pregunta == pregunta.id && respuesta.id_user == auxiliar.id) {
-                                        if (respuesta.respuesta == "Muy de acuerdo") {
-                                            val5 += respuesta.total;
-                                        } else if (respuesta.respuesta == "De acuerdo") {
-                                            val4 += respuesta.total;
-                                        } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
-                                            val3 += respuesta.total;
-                                        } else if (respuesta.respuesta == "En desacuerdo") {
-                                            val2 += respuesta.total;
-                                        } else if (respuesta.respuesta == "Muy en desacuerdo") {
-                                            val1 += respuesta.total;
+                                    var val5 = 0;
+                                    var val4 = 0;
+                                    var val3 = 0;
+                                    var val2 = 0;
+                                    var val1 = 0;
+                                    respuestas.forEach(function (respuesta, index3) {
+                                        if (respuesta.id_pregunta == pregunta.id && respuesta.id_user == profesor.id) {
+                                            if (respuesta.respuesta == "Muy de acuerdo") {
+                                                val5 += respuesta.total;
+                                            } else if (respuesta.respuesta == "De acuerdo") {
+                                                val4 += respuesta.total;
+                                            } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
+                                                val3 += respuesta.total;
+                                            } else if (respuesta.respuesta == "En desacuerdo") {
+                                                val2 += respuesta.total;
+                                            } else if (respuesta.respuesta == "Muy en desacuerdo") {
+                                                val1 += respuesta.total;
+                                            }
                                         }
+                                    });
+                                    if (index == 0) {
+                                        profesor.val5 = val5;
+                                        profesor.val4 = val4;
+                                        profesor.val3 = val3;
+                                        profesor.val2 = val2;
+                                        profesor.val1 = val1;
+                                    } else {
+                                        profesor.val5 += val5;
+                                        profesor.val4 += val4;
+                                        profesor.val3 += val3;
+                                        profesor.val2 += val2;
+                                        profesor.val1 += val1;
                                     }
-                                });
+
+                                    var total = val5 + val4 + val3 + val2 + val1;
+                                    var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
+                                    if (total == 0)
+                                        promedio = "no hay respuestas";
+                                    else {
+                                        promedio = (promedio / total).toFixed(0);
+
+                                        var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
+
+                                        promedio = promedio1.respuesta;
+                                    }
+                                    var aux = pregunta.nombre;
+                                    aux = aux.replace("REEMPLAZAR", profesor.name);
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        '<div class="col-md-8"><div id="n' + profesor.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
+
+                                    $('#n' + profesor.id + 'y' + pregunta.id).parent().hide();
+                                }); //terminan graficos profesores
+                            } else {
+                                if (index == 2) {
+                                    profesores.forEach(function (profesor, index2) {
+                                        var aux = "Dimension Comunicacional de " + profesor.name;
+                                        var total = profesor.val5 + profesor.val4 + profesor.val3 + profesor.val2 + profesor.val1;
+                                        var promedio = profesor.val5 * 5 + profesor.val4 * 4 + profesor.val3 * 3 + profesor.val2 * 2 + profesor.val1 * 1;
+                                        //console.log(profesor);
+                                        if (total == 0)
+                                            promedio = "no hay respuestas";
+                                        else {
+                                            promedio = (promedio / total).toFixed(0);
+
+                                            var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
+
+                                            promedio = promedio1.respuesta;
+                                        }
+
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                            '<div class="col-md-8"><div id="n' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
+
+                                        $('#n' + profesor.id).parent().hide();
+                                    }) // termina resumen de profesores
+                                }
+                                if (index >= 2 && index <= 5) {
+                                    var val5 = 0;
+                                    var val4 = 0;
+                                    var val3 = 0;
+                                    var val2 = 0;
+                                    var val1 = 0;
+                                    respuestas.forEach(function (respuesta, index3) {
+                                        if (respuesta.id_pregunta == pregunta.id) {
+                                            if (respuesta.respuesta == "Mucha") {
+                                                total_5 += respuesta.total;
+                                                val5 += respuesta.total;
+                                            } else if (respuesta.respuesta == "Bastante") {
+                                                total_4 += respuesta.total;
+                                                val4 += respuesta.total;
+                                            } else if (respuesta.respuesta == "Poco") {
+                                                total_3 += respuesta.total;
+                                                val3 += respuesta.total;
+                                            } else if (respuesta.respuesta == "Nada") {
+                                                total_2 += respuesta.total;
+                                                val2 += respuesta.total;
+                                            } else if (respuesta.respuesta == "No se implementó") {
+                                                total_1 += respuesta.total;
+                                                val1 += respuesta.total;
+                                            }
+                                        }
+                                    });
+                                    var total = val5 + val4 + val3 + val2;
+                                    var promedio = val5 * 4 + val4 * 3 + val3 * 2 + val2 * 1 + val1 * 0;
+                                    if (total == 0)
+                                        promedio = "no hay respuestas";
+                                    else {
+                                        promedio = (promedio / total).toFixed(0);
+
+                                        var promedio1 = _.find(escala2, {valor: parseInt(promedio)});
+
+                                        promedio = promedio1.respuesta;
+                                    }
+                                    var aux = pregunta.nombre;
+
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
+
+                                    $('#n' + pregunta.id).parent().hide();
+                                }
+                                if (index == 6) {
+                                    var total = total_5 + total_4 + total_3 + total_2;
+                                    var promedio = total_5 * 4 + total_4 * 3 + total_3 * 2 + total_2 * 1;
+                                    if (total == 0)
+                                        promedio = "no hay respuestas";
+                                    else {
+                                        promedio = (promedio / total).toFixed(0);
+
+                                        var promedio1 = _.find(escala2, {valor: parseInt(promedio)});
+
+                                        promedio = promedio1.respuesta;
+                                    }
+                                    var aux = "Resumen Dimension General";
+
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        '<div class="col-md-8"><div id="n" style="height:300px; width:100%"></div></div></div>');
+
+                                    $('#n').parent().hide();
+                                    total_5 = 0;
+                                    total_4 = 0;
+                                    total_3 = 0;
+                                    total_2 = 0;
+                                    total_1 = 0;
+
+                                }
+                                if (index >= 6 && index <= 7) {
+                                    val5 = 0;
+                                    val4 = 0;
+                                    val3 = 0;
+                                    val2 = 0;
+                                    val1 = 0;
+                                    respuestas.forEach(function (respuesta, index3) {
+                                        if (respuesta.id_pregunta == pregunta.id) {
+                                            if (respuesta.respuesta == "Muy de acuerdo") {
+                                                total_5 += respuesta.total;
+                                                val5 += respuesta.total;
+                                            } else if (respuesta.respuesta == "De acuerdo") {
+                                                total_4 += respuesta.total;
+                                                val4 += respuesta.total;
+                                            } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
+                                                total_3 += respuesta.total;
+                                                val3 += respuesta.total;
+                                            } else if (respuesta.respuesta == "En desacuerdo") {
+                                                total_2 += respuesta.total;
+                                                val2 += respuesta.total;
+                                            } else if (respuesta.respuesta == "Muy en desacuerdo") {
+                                                total_1 += respuesta.total;
+                                                val1 += respuesta.total;
+                                            }
+                                        }
+                                    });
+                                    var total = val5 + val4 + val3 + val2 + val1;
+                                    var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
+                                    if (total == 0)
+                                        promedio = "no hay respuestas";
+                                    else {
+                                        promedio = (promedio / total).toFixed(0);
+                                        //console.log(total);
+                                        promedio1 = _.find(escala1, {valor: parseInt(promedio)});
+
+                                        promedio = promedio1.respuesta;
+                                    }
+                                    var aux = pregunta.nombre;
+
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
+
+                                    $('#n' + pregunta.id).parent().hide()
+                                }
                                 if (index == 8) {
-                                    auxiliar.val5 = val5;
-                                    auxiliar.val4 = val4;
-                                    auxiliar.val3 = val3;
-                                    auxiliar.val2 = val2;
-                                    auxiliar.val1 = val1;
-                                } else {
-                                    auxiliar.val5 += val5;
-                                    auxiliar.val4 += val4;
-                                    auxiliar.val3 += val3;
-                                    auxiliar.val2 += val2;
-                                    auxiliar.val1 += val1;
-                                }
+                                    var total = total_5 + total_4 + total_3 + total_2 + total_1;
+                                    var promedio = total_5 * 5 + total_4 * 4 + total_3 * 3 + total_2 * 2 + total_1;
+                                    if (total == 0)
+                                        promedio = "no hay respuestas";
+                                    else {
+                                        promedio = (promedio / total).toFixed(0);
 
-                                var total = val5 + val4 + val3 + val2 + val1;
-                                var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
-                                if (total == 0)
-                                    promedio = "no hay respuestas";
-                                else {
-                                    promedio = (promedio / total).toFixed(0);
+                                        var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
 
-                                    var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
-
-                                    promedio = promedio1.respuesta;
-                                }
-                                var aux = pregunta.nombre;
-                                aux = aux.replace("REEMPLAZAR", auxiliar.name);
-                                $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                    '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
-
-                                $('#n' + auxiliar.id + 'y' + pregunta.id).parent().hide();
-
-                            });
-
-                        }
-                        if (index == 9) {
-                            auxiliares.forEach(function (auxiliar, index2) {
-                                var aux = "Dimensión Docencia Auxiliar de " + auxiliar.name;
-                                var total = auxiliar.val5 + auxiliar.val4 + auxiliar.val3 + auxiliar.val2 + auxiliar.val1;
-                                var promedio = auxiliar.val5 * 5 + auxiliar.val4 * 4 + auxiliar.val3 * 3 + auxiliar.val2 * 2 + auxiliar.val1 * 1;
-                                if (total == 0)
-                                    promedio = "no hay respuestas";
-                                else {
-                                    promedio = (promedio / total).toFixed(0);
-
-                                    var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
-
-                                    promedio = promedio1.respuesta;
-                                }
-
-                                $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                    '<div class="col-md-8"><div id="n' + auxiliar.id + '" style="height:300px; width:100%"></div></div></div>');
-
-                                $('#n' + auxiliar.id).parent().hide();
-                            }) // termina resumen de profesores
-                        }
-
-                    }
-                });
-            } else {
-                preguntas.forEach(function (pregunta, index) {
-                    if (pregunta.profesor) {
-                        profesores.forEach(function (profesor, index2) {
-
-                            var val5 = 0;
-                            var val4 = 0;
-                            var val3 = 0;
-                            var val2 = 0;
-                            var val1 = 0;
-                            respuestas.forEach(function (respuesta, index3) {
-                                if (respuesta.id_pregunta == pregunta.id && respuesta.id_user == profesor.id) {
-                                    if (respuesta.respuesta == "Muy de acuerdo") {
-                                        val5 += respuesta.total;
-                                    } else if (respuesta.respuesta == "De acuerdo") {
-                                        val4 += respuesta.total;
-                                    } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
-                                        val3 += respuesta.total;
-                                    } else if (respuesta.respuesta == "En desacuerdo") {
-                                        val2 += respuesta.total;
-                                    } else if (respuesta.respuesta == "Muy en desacuerdo") {
-                                        val1 += respuesta.total;
+                                        promedio = promedio1.respuesta;
                                     }
+                                    var aux = "Resumen Dimensión Evaluaciones";
+
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        '<div class="col-md-8"><div id="t" style="height:300px; width:100%"></div></div></div>');
+
+                                    $('#t').parent().hide();
                                 }
-                            });
-                            if (index == 0) {
-                                profesor.val5 = val5;
-                                profesor.val4 = val4;
-                                profesor.val3 = val3;
-                                profesor.val2 = val2;
-                                profesor.val1 = val1;
-                            } else {
-                                profesor.val5 += val5;
-                                profesor.val4 += val4;
-                                profesor.val3 += val3;
-                                profesor.val2 += val2;
-                                profesor.val1 += val1;
+                                if (index >= 8 && index <= 9) {
+
+                                    auxiliares.forEach(function (auxiliar, index2) {
+
+                                        var val5 = 0;
+                                        var val4 = 0;
+                                        var val3 = 0;
+                                        var val2 = 0;
+                                        var val1 = 0;
+                                        respuestas.forEach(function (respuesta, index3) {
+                                            if (respuesta.id_pregunta == pregunta.id && respuesta.id_user == auxiliar.id) {
+                                                if (respuesta.respuesta == "Muy de acuerdo") {
+                                                    val5 += respuesta.total;
+                                                } else if (respuesta.respuesta == "De acuerdo") {
+                                                    val4 += respuesta.total;
+                                                } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
+                                                    val3 += respuesta.total;
+                                                } else if (respuesta.respuesta == "En desacuerdo") {
+                                                    val2 += respuesta.total;
+                                                } else if (respuesta.respuesta == "Muy en desacuerdo") {
+                                                    val1 += respuesta.total;
+                                                }
+                                            }
+                                        });
+                                        if (index == 8) {
+                                            auxiliar.val5 = val5;
+                                            auxiliar.val4 = val4;
+                                            auxiliar.val3 = val3;
+                                            auxiliar.val2 = val2;
+                                            auxiliar.val1 = val1;
+                                        } else {
+                                            auxiliar.val5 += val5;
+                                            auxiliar.val4 += val4;
+                                            auxiliar.val3 += val3;
+                                            auxiliar.val2 += val2;
+                                            auxiliar.val1 += val1;
+                                        }
+
+                                        var total = val5 + val4 + val3 + val2 + val1;
+                                        var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
+                                        if (total == 0)
+                                            promedio = "no hay respuestas";
+                                        else {
+                                            promedio = (promedio / total).toFixed(0);
+
+                                            var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
+
+                                            promedio = promedio1.respuesta;
+                                        }
+                                        var aux = pregunta.nombre;
+                                        aux = aux.replace("REEMPLAZAR", auxiliar.name);
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                            '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
+
+                                        $('#n' + auxiliar.id + 'y' + pregunta.id).parent().hide();
+
+                                    });
+
+                                }
+                                if (index == 9) {
+                                    auxiliares.forEach(function (auxiliar, index2) {
+                                        var aux = "Dimensión Docencia Auxiliar de " + auxiliar.name;
+                                        var total = auxiliar.val5 + auxiliar.val4 + auxiliar.val3 + auxiliar.val2 + auxiliar.val1;
+                                        var promedio = auxiliar.val5 * 5 + auxiliar.val4 * 4 + auxiliar.val3 * 3 + auxiliar.val2 * 2 + auxiliar.val1 * 1;
+                                        if (total == 0)
+                                            promedio = "no hay respuestas";
+                                        else {
+                                            promedio = (promedio / total).toFixed(0);
+
+                                            var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
+
+                                            promedio = promedio1.respuesta;
+                                        }
+
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                            '<div class="col-md-8"><div id="n' + auxiliar.id + '" style="height:300px; width:100%"></div></div></div>');
+
+                                        $('#n' + auxiliar.id).parent().hide();
+                                    }) // termina resumen de profesores
+                                }
+
                             }
-
-                            var total = val5 + val4 + val3 + val2 + val1;
-                            var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
-                            if (total == 0)
-                                promedio = "no hay respuestas";
-                            else {
-                                promedio = (promedio / total).toFixed(0);
-
-                                var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
-
-                                promedio = promedio1.respuesta;
-                            }
-                            var aux = pregunta.nombre;
-                            aux = aux.replace("REEMPLAZAR", profesor.name);
-                            $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                '<div class="col-md-8"><div id="n' + profesor.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
-
-                            $('#n' + profesor.id + 'y' + pregunta.id).parent().hide();
-                        }); //terminan graficos profesores
+                        });
                     } else {
-                        if (index == 2) {
-                            profesores.forEach(function (profesor, index2) {
-                                var aux = "Dimension Comunicacional de " + profesor.name;
-                                var total = profesor.val5 + profesor.val4 + profesor.val3 + profesor.val2 + profesor.val1;
-                                var promedio = profesor.val5 * 5 + profesor.val4 * 4 + profesor.val3 * 3 + profesor.val2 * 2 + profesor.val1 * 1;
-                                if (total == 0)
-                                    promedio = "no hay respuestas";
-                                else {
-                                    promedio = (promedio / total).toFixed(0);
+                        preguntas.forEach(function (pregunta, index) {
+                            if (pregunta.profesor) {
+                                profesores.forEach(function (profesor, index2) {
 
-                                    var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
-
-                                    promedio = promedio1.respuesta;
-                                }
-
-                                $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                    '<div class="col-md-8"><div id="n' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
-
-                                $('#n' + profesor.id).parent().hide();
-                            }) // termina resumen de profesores
-                        }
-                        if (index >= 2 && index <= 6) {
-                            var val5 = 0;
-                            var val4 = 0;
-                            var val3 = 0;
-                            var val2 = 0;
-                            var val1 = 0;
-                            respuestas.forEach(function (respuesta, index3) {
-                                if (respuesta.id_pregunta == pregunta.id) {
-                                    if (respuesta.respuesta == "Mucha") {
-                                        total_5 += respuesta.total;
-                                        val5 += respuesta.total;
-                                    } else if (respuesta.respuesta == "Bastante") {
-                                        total_4 += respuesta.total;
-                                        val4 += respuesta.total;
-                                    } else if (respuesta.respuesta == "Poco") {
-                                        total_3 += respuesta.total;
-                                        val3 += respuesta.total;
-                                    } else if (respuesta.respuesta == "Nada") {
-                                        total_2 += respuesta.total;
-                                        val2 += respuesta.total;
-                                    } else if (respuesta.respuesta == "No se implementó") {
-                                        total_1 += respuesta.total;
-                                        val1 += respuesta.total;
-                                    }
-                                }
-                            });
-                            var total = val5 + val4 + val3 + val2;
-                            var promedio = val5 * 4 + val4 * 3 + val3 * 2 + val2 * 1 + val1 * 0;
-                            if (total == 0)
-                                promedio = "no hay respuestas";
-                            else {
-                                promedio = (promedio / total).toFixed(0);
-
-                                var promedio1 = _.find(escala2, {valor: parseInt(promedio)});
-
-                                promedio = promedio1.respuesta;
-                            }
-                            var aux = pregunta.nombre;
-
-                            $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
-
-                            $('#n' + pregunta.id).parent().hide();
-                        }
-                        if (index == 7) {
-                            var total = total_5 + total_4 + total_3 + total_2;
-                            var promedio = total_5 * 4 + total_4 * 3 + total_3 * 2 + total_2 * 1;
-                            if (total == 0)
-                                promedio = "no hay respuestas";
-                            else {
-                                promedio = (promedio / total).toFixed(0);
-
-                                var promedio1 = _.find(escala2, {valor: parseInt(promedio)});
-
-                                promedio = promedio1.respuesta;
-                            }
-                            var aux = "Resumen Dimension General";
-
-                            $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                '<div class="col-md-8"><div id="n" style="height:300px; width:100%"></div></div></div>');
-
-                            $('#n').parent().hide();
-                            total_5 = 0;
-                            total_4 = 0;
-                            total_3 = 0;
-                            total_2 = 0;
-                            total_1 = 0;
-
-                        }
-                        if (index >= 7 && index <= 8) {
-                            val5 = 0;
-                            val4 = 0;
-                            val3 = 0;
-                            val2 = 0;
-                            val1 = 0;
-                            respuestas.forEach(function (respuesta, index3) {
-                                if (respuesta.id_pregunta == pregunta.id) {
-                                    if (respuesta.respuesta == "Muy de acuerdo") {
-                                        total_5 += respuesta.total;
-                                        val5 += respuesta.total;
-                                    } else if (respuesta.respuesta == "De acuerdo") {
-                                        total_4 += respuesta.total;
-                                        val4 += respuesta.total;
-                                    } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
-                                        total_3 += respuesta.total;
-                                        val3 += respuesta.total;
-                                    } else if (respuesta.respuesta == "En desacuerdo") {
-                                        total_2 += respuesta.total;
-                                        val2 += respuesta.total;
-                                    } else if (respuesta.respuesta == "Muy en desacuerdo") {
-                                        total_1 += respuesta.total;
-                                        val1 += respuesta.total;
-                                    }
-                                }
-                            });
-                            var total = val5 + val4 + val3 + val2 + val1;
-                            var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
-                            if (total == 0)
-                                promedio = "no hay respuestas";
-                            else {
-                                promedio = (promedio / total).toFixed(0);
-                                //console.log(total);
-                                promedio1 = _.find(escala1, {valor: parseInt(promedio)});
-
-                                promedio = promedio1.respuesta;
-                            }
-                            var aux = pregunta.nombre;
-
-                            $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
-
-                            $('#n' + pregunta.id).parent().hide()
-                        }
-                        if (index == 9) {
-                            var total = total_5 + total_4 + total_3 + total_2 + total_1;
-                            var promedio = total_5 * 5 + total_4 * 4 + total_3 * 3 + total_2 * 2 + total_1;
-                            if (total == 0)
-                                promedio = "no hay respuestas";
-                            else {
-                                promedio = (promedio / total).toFixed(0);
-
-                                var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
-
-                                promedio = promedio1.respuesta;
-                            }
-                            var aux = "Resumen Dimensión Evaluaciones";
-
-                            $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                '<div class="col-md-8"><div id="t" style="height:300px; width:100%"></div></div></div>');
-
-                            $('#t').parent().hide();
-
-                            auxiliares.forEach(function (auxiliar, index2) {
-
-                                var val5 = 0;
-                                var val4 = 0;
-                                var val3 = 0;
-                                var val2 = 0;
-                                var val1 = 0;
-                                respuestas.forEach(function (respuesta, index3) {
-                                    if (respuesta.id_pregunta == pregunta.id && respuesta.id_user == auxiliar.id) {
-                                        if (respuesta.respuesta == "Muy de acuerdo") {
-                                            val5 += respuesta.total;
-                                        } else if (respuesta.respuesta == "De acuerdo") {
-                                            val4 += respuesta.total;
-                                        } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
-                                            val3 += respuesta.total;
-                                        } else if (respuesta.respuesta == "En desacuerdo") {
-                                            val2 += respuesta.total;
-                                        } else if (respuesta.respuesta == "Muy en desacuerdo") {
-                                            val1 += respuesta.total;
+                                    var val5 = 0;
+                                    var val4 = 0;
+                                    var val3 = 0;
+                                    var val2 = 0;
+                                    var val1 = 0;
+                                    respuestas.forEach(function (respuesta, index3) {
+                                        if (respuesta.id_pregunta == pregunta.id && respuesta.id_user == profesor.id) {
+                                            if (respuesta.respuesta == "Muy de acuerdo") {
+                                                val5 += respuesta.total;
+                                            } else if (respuesta.respuesta == "De acuerdo") {
+                                                val4 += respuesta.total;
+                                            } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
+                                                val3 += respuesta.total;
+                                            } else if (respuesta.respuesta == "En desacuerdo") {
+                                                val2 += respuesta.total;
+                                            } else if (respuesta.respuesta == "Muy en desacuerdo") {
+                                                val1 += respuesta.total;
+                                            }
                                         }
+                                    });
+                                    if (index == 0) {
+                                        profesor.val5 = val5;
+                                        profesor.val4 = val4;
+                                        profesor.val3 = val3;
+                                        profesor.val2 = val2;
+                                        profesor.val1 = val1;
+                                    } else {
+                                        profesor.val5 += val5;
+                                        profesor.val4 += val4;
+                                        profesor.val3 += val3;
+                                        profesor.val2 += val2;
+                                        profesor.val1 += val1;
                                     }
-                                });
-                                if (auxiliar.val5 == undefined) {
-                                    auxiliar.val5 = val5;
-                                    auxiliar.val4 = val4;
-                                    auxiliar.val3 = val3;
-                                    auxiliar.val2 = val2;
-                                    auxiliar.val1 = val1;
-                                } else {
-                                    auxiliar.val5 += val5;
-                                    auxiliar.val4 += val4;
-                                    auxiliar.val3 += val3;
-                                    auxiliar.val2 += val2;
-                                    auxiliar.val1 += val1;
-                                }
 
-                                var total = val5 + val4 + val3 + val2 + val1;
-                                var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
-                                if (total == 0)
-                                    promedio = "no hay respuestas";
-                                else {
-                                    promedio = (promedio / total).toFixed(0);
+                                    var total = val5 + val4 + val3 + val2 + val1;
+                                    var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
+                                    if (total == 0)
+                                        promedio = "no hay respuestas";
+                                    else {
+                                        promedio = (promedio / total).toFixed(0);
+                                        console.log(promedio);
+                                        var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
 
-                                    var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
+                                        promedio = promedio1.respuesta;
+                                    }
+                                    var aux = pregunta.nombre;
+                                    aux = aux.replace("REEMPLAZAR", profesor.name);
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        '<div class="col-md-8"><div id="n' + profesor.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
 
-                                    promedio = promedio1.respuesta;
-                                }
-                                var aux = pregunta.nombre;
-                                aux = aux.replace("REEMPLAZAR", auxiliar.name);
-                                $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                    '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
+                                    $('#n' + profesor.id + 'y' + pregunta.id).parent().hide();
+                                }); //terminan graficos profesores
+                            } else {
+                                if (index == 2) {
+                                    profesores.forEach(function (profesor, index2) {
+                                        var aux = "Dimension Comunicacional de " + profesor.name;
+                                        var total = profesor.val5 + profesor.val4 + profesor.val3 + profesor.val2 + profesor.val1;
+                                        var promedio = profesor.val5 * 5 + profesor.val4 * 4 + profesor.val3 * 3 + profesor.val2 * 2 + profesor.val1 * 1;
+                                        if (total == 0)
+                                            promedio = "no hay respuestas";
+                                        else {
+                                            promedio = (promedio / total).toFixed(0);
 
-                                $('#n' + auxiliar.id + 'y' + pregunta.id).parent().hide();
+                                            var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
 
-                            });
-                        }
 
-                        if (index == 10) {
-                            auxiliares.forEach(function (auxiliar, index2) {
-                                var val7 = 0;
-                                var val6 = 0;
-                                var val5 = 0;
-                                var val4 = 0;
-                                var val3 = 0;
-                                var val2 = 0;
-                                var val1 = 0;
-                                respuestas.forEach(function (respuesta, index3) {
-                                    if (respuesta.id_pregunta == pregunta.id && respuesta.id_user == auxiliar.id) {
-                                        if (respuesta.respuesta == "7") {
-                                            val7 += respuesta.total;
-                                        } else if (respuesta.respuesta == "6") {
-                                            val6 += respuesta.total;
-                                        } else if (respuesta.respuesta == "5") {
-                                            val5 += respuesta.total;
-                                        } else if (respuesta.respuesta == "4") {
-                                            val4 += respuesta.total;
-                                        } else if (respuesta.respuesta == "3") {
-                                            val3 += respuesta.total;
-                                        } else if (respuesta.respuesta == "2") {
-                                            val2 += respuesta.total;
-                                        } else if (respuesta.respuesta == "1") {
-                                            val1 += respuesta.total;
+                                            promedio = promedio1.respuesta;
                                         }
+
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                            '<div class="col-md-8"><div id="n' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
+
+                                        $('#n' + profesor.id).parent().hide();
+                                    }) // termina resumen de profesores
+                                }
+                                if (index >= 2 && index <= 6) {
+                                    var val5 = 0;
+                                    var val4 = 0;
+                                    var val3 = 0;
+                                    var val2 = 0;
+                                    var val1 = 0;
+                                    respuestas.forEach(function (respuesta, index3) {
+                                        if (respuesta.id_pregunta == pregunta.id) {
+                                            if (respuesta.respuesta == "Mucha") {
+                                                total_5 += respuesta.total;
+                                                val5 += respuesta.total;
+                                            } else if (respuesta.respuesta == "Bastante") {
+                                                total_4 += respuesta.total;
+                                                val4 += respuesta.total;
+                                            } else if (respuesta.respuesta == "Poco") {
+                                                total_3 += respuesta.total;
+                                                val3 += respuesta.total;
+                                            } else if (respuesta.respuesta == "Nada") {
+                                                total_2 += respuesta.total;
+                                                val2 += respuesta.total;
+                                            } else if (respuesta.respuesta == "No se implementó") {
+                                                total_1 += respuesta.total;
+                                                val1 += respuesta.total;
+                                            }
+                                        }
+                                    });
+                                    var total = val5 + val4 + val3 + val2;
+                                    var promedio = val5 * 4 + val4 * 3 + val3 * 2 + val2 * 1 + val1 * 0;
+                                    if (total == 0)
+                                        promedio = "no hay respuestas";
+                                    else {
+                                        promedio = (promedio / total).toFixed(0);
+
+                                        var promedio1 = _.find(escala2, {valor: parseInt(promedio)});
+
+                                        promedio = promedio1.respuesta;
                                     }
-                                });
+                                    var aux = pregunta.nombre;
 
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
 
-                                var total =val7 + val6 + val5 + val4 + val3 + val2 + val1;
-                                var promedio = val7 * 7 + val6 * 6 + val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
-                                if (total == 0) {
-                                    promedio = "no hay respuestas";
-                                    desviacion = "";
+                                    $('#n' + pregunta.id).parent().hide();
                                 }
-                                else {
-                                    promedio = (promedio / total).toFixed(2);
-                                    var desviacion = Math.pow((7-promedio),2)*val7 +  Math.pow((6-promedio),2)*val6 + Math.pow((5-promedio),2)*val5 + Math.pow((4-promedio),2)*val4 +
-                                        Math.pow((3-promedio),2)*val3 + Math.pow((2-promedio),2)*val2 + Math.pow((1-promedio),2)*val1;
-                                    desviacion = (desviacion/(total-1)).toFixed(2);
-                                    desviacion = (Math.sqrt(desviacion,2)).toFixed(2);;
+                                if (index == 7) {
+                                    var total = total_5 + total_4 + total_3 + total_2;
+                                    var promedio = total_5 * 4 + total_4 * 3 + total_3 * 2 + total_2 * 1;
+                                    if (total == 0)
+                                        promedio = "no hay respuestas";
+                                    else {
+                                        promedio = (promedio / total).toFixed(0);
+
+                                        var promedio1 = _.find(escala2, {valor: parseInt(promedio)});
+
+                                        promedio = promedio1.respuesta;
+                                    }
+                                    var aux = "Resumen Dimension General";
+
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        '<div class="col-md-8"><div id="n" style="height:300px; width:100%"></div></div></div>');
+
+                                    $('#n').parent().hide();
+                                    total_5 = 0;
+                                    total_4 = 0;
+                                    total_3 = 0;
+                                    total_2 = 0;
+                                    total_1 = 0;
+
                                 }
-                                var aux = pregunta.nombre;
-                                aux = aux.replace("REEMPLAZAR", auxiliar.name);
-                                $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '<br>Desviacion : ' + desviacion + '</h4></a></div>' +
-                                    '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
+                                if (index >= 7 && index <= 8) {
+                                    val5 = 0;
+                                    val4 = 0;
+                                    val3 = 0;
+                                    val2 = 0;
+                                    val1 = 0;
+                                    respuestas.forEach(function (respuesta, index3) {
+                                        if (respuesta.id_pregunta == pregunta.id) {
+                                            if (respuesta.respuesta == "Muy de acuerdo") {
+                                                total_5 += respuesta.total;
+                                                val5 += respuesta.total;
+                                            } else if (respuesta.respuesta == "De acuerdo") {
+                                                total_4 += respuesta.total;
+                                                val4 += respuesta.total;
+                                            } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
+                                                total_3 += respuesta.total;
+                                                val3 += respuesta.total;
+                                            } else if (respuesta.respuesta == "En desacuerdo") {
+                                                total_2 += respuesta.total;
+                                                val2 += respuesta.total;
+                                            } else if (respuesta.respuesta == "Muy en desacuerdo") {
+                                                total_1 += respuesta.total;
+                                                val1 += respuesta.total;
+                                            }
+                                        }
+                                    });
+                                    var total = val5 + val4 + val3 + val2 + val1;
+                                    var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
+                                    if (total == 0)
+                                        promedio = "no hay respuestas";
+                                    else {
+                                        promedio = (promedio / total).toFixed(0);
+                                        //console.log(total);
+                                        promedio1 = _.find(escala1, {valor: parseInt(promedio)});
 
-                                $('#n' + auxiliar.id + 'y' + pregunta.id).parent().hide();
+                                        promedio = promedio1.respuesta;
+                                    }
+                                    var aux = pregunta.nombre;
 
-                            });
-                        }
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
+
+                                    $('#n' + pregunta.id).parent().hide()
+                                }
+                                if (index == 9) {
+                                    var total = total_5 + total_4 + total_3 + total_2 + total_1;
+                                    var promedio = total_5 * 5 + total_4 * 4 + total_3 * 3 + total_2 * 2 + total_1;
+                                    if (total == 0)
+                                        promedio = "no hay respuestas";
+                                    else {
+                                        promedio = (promedio / total).toFixed(0);
+
+                                        var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
+
+                                        promedio = promedio1.respuesta;
+                                    }
+                                    var aux = "Resumen Dimensión Evaluaciones";
+
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        '<div class="col-md-8"><div id="t" style="height:300px; width:100%"></div></div></div>');
+
+                                    $('#t').parent().hide();
+
+                                    auxiliares.forEach(function (auxiliar, index2) {
+
+                                        var val5 = 0;
+                                        var val4 = 0;
+                                        var val3 = 0;
+                                        var val2 = 0;
+                                        var val1 = 0;
+                                        respuestas.forEach(function (respuesta, index3) {
+                                            if (respuesta.id_pregunta == pregunta.id && respuesta.id_user == auxiliar.id) {
+                                                if (respuesta.respuesta == "Muy de acuerdo") {
+                                                    val5 += respuesta.total;
+                                                } else if (respuesta.respuesta == "De acuerdo") {
+                                                    val4 += respuesta.total;
+                                                } else if (respuesta.respuesta == "Ni de acuerdo ni en desacuerdo") {
+                                                    val3 += respuesta.total;
+                                                } else if (respuesta.respuesta == "En desacuerdo") {
+                                                    val2 += respuesta.total;
+                                                } else if (respuesta.respuesta == "Muy en desacuerdo") {
+                                                    val1 += respuesta.total;
+                                                }
+                                            }
+                                        });
+                                        if (auxiliar.val5 == undefined) {
+                                            auxiliar.val5 = val5;
+                                            auxiliar.val4 = val4;
+                                            auxiliar.val3 = val3;
+                                            auxiliar.val2 = val2;
+                                            auxiliar.val1 = val1;
+                                        } else {
+                                            auxiliar.val5 += val5;
+                                            auxiliar.val4 += val4;
+                                            auxiliar.val3 += val3;
+                                            auxiliar.val2 += val2;
+                                            auxiliar.val1 += val1;
+                                        }
+
+                                        var total = val5 + val4 + val3 + val2 + val1;
+                                        var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
+                                        if (total == 0)
+                                            promedio = "no hay respuestas";
+                                        else {
+                                            promedio = (promedio / total).toFixed(0);
+
+                                            var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
+
+                                            promedio = promedio1.respuesta;
+                                        }
+                                        var aux = pregunta.nombre;
+                                        aux = aux.replace("REEMPLAZAR", auxiliar.name);
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                            '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
+
+                                        $('#n' + auxiliar.id + 'y' + pregunta.id).parent().hide();
+
+                                    });
+                                }
+
+                                if (index == 10) {
+                                    auxiliares.forEach(function (auxiliar, index2) {
+                                        var val7 = 0;
+                                        var val6 = 0;
+                                        var val5 = 0;
+                                        var val4 = 0;
+                                        var val3 = 0;
+                                        var val2 = 0;
+                                        var val1 = 0;
+                                        respuestas.forEach(function (respuesta, index3) {
+                                            if (respuesta.id_pregunta == pregunta.id && respuesta.id_user == auxiliar.id) {
+                                                if (respuesta.respuesta == "7") {
+                                                    val7 += respuesta.total;
+                                                } else if (respuesta.respuesta == "6") {
+                                                    val6 += respuesta.total;
+                                                } else if (respuesta.respuesta == "5") {
+                                                    val5 += respuesta.total;
+                                                } else if (respuesta.respuesta == "4") {
+                                                    val4 += respuesta.total;
+                                                } else if (respuesta.respuesta == "3") {
+                                                    val3 += respuesta.total;
+                                                } else if (respuesta.respuesta == "2") {
+                                                    val2 += respuesta.total;
+                                                } else if (respuesta.respuesta == "1") {
+                                                    val1 += respuesta.total;
+                                                }
+                                            }
+                                        });
+
+
+                                        var total =val7 + val6 + val5 + val4 + val3 + val2 + val1;
+                                        var promedio = val7 * 7 + val6 * 6 + val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
+                                        if (total == 0) {
+                                            promedio = "no hay respuestas";
+                                            desviacion = "";
+                                        }
+                                        else {
+                                            promedio = (promedio / total).toFixed(2);
+                                            var desviacion = Math.pow((7-promedio),2)*val7 +  Math.pow((6-promedio),2)*val6 + Math.pow((5-promedio),2)*val5 + Math.pow((4-promedio),2)*val4 +
+                                                Math.pow((3-promedio),2)*val3 + Math.pow((2-promedio),2)*val2 + Math.pow((1-promedio),2)*val1;
+                                            desviacion = (desviacion/(total-1)).toFixed(2);
+                                            desviacion = (Math.sqrt(desviacion,2)).toFixed(2);;
+                                        }
+                                        var aux = pregunta.nombre;
+                                        aux = aux.replace("REEMPLAZAR", auxiliar.name);
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '<br>Desviacion : ' + desviacion + '</h4></a></div>' +
+                                            '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
+
+                                        $('#n' + auxiliar.id + 'y' + pregunta.id).parent().hide();
+
+                                    });
+                                }
+                            }
+                        });
                     }
-                });
-            }
+                }
+            });
+
         });
 
 
