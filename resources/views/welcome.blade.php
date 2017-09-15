@@ -604,8 +604,9 @@
                                             '<div class="col-md-8"><div id="n' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
 
                                         $('#n' + profesor.id).parent().hide();
-                                    }) // termina resumen de profesores
+                                    }); // termina resumen de profesores
                                 }
+                                alert(index);
                                 if (index >= 2 && index <= 6) {
                                     var val5 = 0;
                                     var val4 = 0;
