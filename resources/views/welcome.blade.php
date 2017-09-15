@@ -702,8 +702,8 @@
                                             }
                                         }
                                     });
-                                    var total = val5 + val4 + val3 + val2 + val1;
-                                    var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
+                                    total = val5 + val4 + val3 + val2 + val1;
+                                    promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
                                     if (total == 0)
                                         promedio = "no hay respuestas";
                                     else {
