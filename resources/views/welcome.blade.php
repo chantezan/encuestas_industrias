@@ -534,7 +534,7 @@
                                     var val3 = 0;
                                     var val2 = 0;
                                     var val1 = 0;
-                                    console.log(respuestas)
+
                                     respuestas.forEach(function (respuesta, index3) {
                                         if (respuesta.id_pregunta == pregunta.id && respuesta.id_user == profesor.id) {
                                             if (respuesta.respuesta == "Muy de acuerdo") {
@@ -570,6 +570,7 @@
                                         promedio = "no hay respuestas";
                                     else {
                                         console.log(promedio);
+                                        console.log(total);
                                         promedio = (promedio / total).toFixed(0);
                                         //console.log(promedio);
                                         var promedio1 = _.find(escala1, {valor: parseInt(promedio)});
