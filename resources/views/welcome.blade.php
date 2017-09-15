@@ -534,6 +534,7 @@
                                     var val3 = 0;
                                     var val2 = 0;
                                     var val1 = 0;
+                                    console.log(respuestas)
                                     respuestas.forEach(function (respuesta, index3) {
                                         if (respuesta.id_pregunta == pregunta.id && respuesta.id_user == profesor.id) {
                                             if (respuesta.respuesta == "Muy de acuerdo") {
