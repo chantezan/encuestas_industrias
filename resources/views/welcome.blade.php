@@ -148,7 +148,7 @@
 
 <script src="{{ URL::asset('light/assets/js/underscore.min.js')}}"></script>
 
-<script type="text/javascript">
+<script>
     jQuery(document).ready(function() {
 
 
@@ -604,9 +604,8 @@
                                             '<div class="col-md-8"><div id="n' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
 
                                         $('#n' + profesor.id).parent().hide();
-                                    }); // termina resumen de profesores
+                                    }) // termina resumen de profesores
                                 }
-
                                 if (index >= 2 && index <= 6) {
                                     var val5 = 0;
                                     var val4 = 0;
@@ -635,7 +634,7 @@
                                     });
                                     total = val5*1 + val4*1 + val3*1 + val2*1;
                                     promedio = val5 * 4 + val4 * 3 + val3 * 2 + val2 * 1 + val1 * 0;
-                                    console.log(total);
+
                                     if (total == 0)
                                         promedio = "no hay respuestas";
                                     else {
