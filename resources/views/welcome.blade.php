@@ -551,17 +551,17 @@
                                         }
                                     });
                                     if (index == 0) {
-                                        profesor.val5 = val5;
-                                        profesor.val4 = val4;
-                                        profesor.val3 = val3;
-                                        profesor.val2 = val2;
-                                        profesor.val1 = val1;
+                                        profesor.val5 = val5*1;
+                                        profesor.val4 = val4*1;
+                                        profesor.val3 = val3*1;
+                                        profesor.val2 = val2*1;
+                                        profesor.val1 = val1*1;
                                     } else {
-                                        profesor.val5 += val5;
-                                        profesor.val4 += val4;
-                                        profesor.val3 += val3;
-                                        profesor.val2 += val2;
-                                        profesor.val1 += val1;
+                                        profesor.val5 += val5*1;
+                                        profesor.val4 += val4*1;
+                                        profesor.val3 += val3*1;
+                                        profesor.val2 += val2*1;
+                                        profesor.val1 += val1*1;
                                     }
 
                                     var total = parseInt(val5) + parseInt(val4) + parseInt(val3) + parseInt(val2) + val1*1;
@@ -617,24 +617,24 @@
                                     respuestas.forEach(function (respuesta, index3) {
                                         if (respuesta.id_pregunta == pregunta.id) {
                                             if (respuesta.respuesta == "Mucha") {
-                                                total_5 += respuesta.total;
-                                                val5 += respuesta.total;
+                                                total_5 += respuesta.total*1;
+                                                val5 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "Bastante") {
-                                                total_4 += respuesta.total;
-                                                val4 += respuesta.total;
+                                                total_4 += respuesta.total*1;
+                                                val4 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "Poco") {
-                                                total_3 += respuesta.total;
-                                                val3 += respuesta.total;
+                                                total_3 += respuesta.total*1;
+                                                val3 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "Nada") {
-                                                total_2 += respuesta.total;
-                                                val2 += respuesta.total;
+                                                total_2 += respuesta.total*1;
+                                                val2 += respuesta.total*1;
                                             } else if (respuesta.respuesta == "No se implementó") {
-                                                total_1 += respuesta.total;
-                                                val1 += respuesta.total;
+                                                total_1 += respuesta.total*1;
+                                                val1 += respuesta.total*1;
                                             }
                                         }
                                     });
-                                    var total = val5 + val4 + val3 + val2;
+                                    var total = val5*1 + val4*1 + val3*1 + val2*1;
                                     var promedio = val5 * 4 + val4 * 3 + val3 * 2 + val2 * 1 + val1 * 0;
                                     if (total == 0)
                                         promedio = "no hay respuestas";
