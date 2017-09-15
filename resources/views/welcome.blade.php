@@ -148,7 +148,7 @@
 
 <script src="{{ URL::asset('light/assets/js/underscore.min.js')}}"></script>
 
-<script>
+<script type="text/javascript">
     jQuery(document).ready(function() {
 
 
