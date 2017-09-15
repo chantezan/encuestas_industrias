@@ -564,7 +564,7 @@
                                         profesor.val1 += val1;
                                     }
 
-                                    var total = val5 + val4 + val3 + val2 + val1;
+                                    var total = parseInt(val5) + parseInt(val4) + parseInt(val3) + parseInt(val2) + val1*1;
                                     var promedio = val5 * 5 + val4 * 4 + val3 * 3 + val2 * 2 + val1 * 1;
                                     if (total == 0)
                                         promedio = "no hay respuestas";
