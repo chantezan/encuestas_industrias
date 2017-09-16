@@ -50,11 +50,15 @@ class GraficosController extends Controller
         {
             return redirect()->back()->withInput()->with('message', 'No esta logeado');
         }
-        $usuario = User::with('secciones.curso')->find(Auth::user()->id);
-        $usuarios = User::with('secciones.curso')->where('name',$usuario->name)->get();
+        $usuarios = User::with('secciones.curso')->find(Auth::user()->id);
+
 
         $cursos = collect();
-        foreach ($usuarios as $usuario) {
+        foreach ($usuarios->secciones as $seccion) {
+                $cursos->push(Curso::with(['tipo.preguntas', 'secciones.profesores', 'secciones.auxiliares', 'secciones.coordinadores'])
+                    ->find($seccion->id_curso));
+        }
+        foreach ($usuarios->usuarios as $usuario) {
             foreach ($usuario->secciones as $seccion) {
                 $cursos->push(Curso::with(['tipo.preguntas', 'secciones.profesores', 'secciones.auxiliares', 'secciones.coordinadores'])
                     ->find($seccion->id_curso));

@@ -29,4 +29,12 @@ class User extends Authenticatable
             'id_user','id_seccion');
     }
 
+    public function usuarios(){
+        return $this->hasMany('App\User','id_user');
+    }
+
+    public function real(){
+        return $this->belongsTo('App\User','id_user');
+    }
+
 }

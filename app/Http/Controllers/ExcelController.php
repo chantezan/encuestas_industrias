@@ -48,6 +48,18 @@ class ExcelController extends Controller
                     $profesor->id_rol = 1;
                     $profesor->save();
                 }
+                if($profesor->id_rol == 2 || $profesor->id_rol == 3){
+                    $profesor2 = User::where('name',$row['profesor'].".")->first();
+                    if($profesor2==null){
+                        $profesor2 = new User();
+                    }
+                    $profesor2->name = $row['profesor'].".";
+                    $profesor2->password = Hash::make($row['profesor']);
+                    $profesor2->id_rol = 1;
+                    $profesor2->id_user = $profesor->id;
+                    $profesor2->save();
+                    $profesor = $profesor2;
+                }
                 $relacion = new User_Seccion();
                 $relacion->id_seccion = $seccion->id;
                 $relacion->id_user = $profesor->id;
@@ -63,6 +75,15 @@ class ExcelController extends Controller
                     $profesor->id_rol = 3;
                     $profesor->save();
                 }
+                if($profesor->id_rol == 1){
+                    $profesor2 = new User();
+                    $profesor2->name = $row['coordinador'].".";
+                    $profesor2->password = Hash::make($row['coordinador']);
+                    $profesor2->id_rol = 3;
+                    $profesor2->id_user = $profesor->id;
+                    $profesor2->save();
+                    $profesor = $profesor2;
+                }
                 $relacion = new User_Seccion();
                 $relacion->id_seccion = $seccion->id;
                 $relacion->id_user = $profesor->id;
@@ -77,6 +98,15 @@ class ExcelController extends Controller
                     $profesor->password = Hash::make($row['prof._auxiliar']);
                     $profesor->id_rol = 2;
                     $profesor->save();
+                }
+                if($profesor->id_rol == 1){
+                    $profesor2 = new User();
+                    $profesor2->name = $row['prof._auxiliar'].".";
+                    $profesor2->password = Hash::make($row['prof._auxiliar']);
+                    $profesor2->id_rol = 1;
+                    $profesor2->id_user = $profesor->id;
+                    $profesor2->save();
+                    $profesor = $profesor2;
                 }
                 $relacion = new User_Seccion();
                 $relacion->id_seccion = $seccion->id;

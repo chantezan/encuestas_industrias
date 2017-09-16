@@ -42,7 +42,13 @@ class SubirEncuestaController extends Controller
         $rows = Excel::load($request->file)->get();
 
         $seccion = Seccion::with(['profesores','auxiliares','curso.secciones.auxiliares','coordinadores'])->find($request->seccion);
-        $profesores = $seccion->profesores;
+
+        $profesores = collect();
+        foreach ($seccion->profesores as $profesor) {
+            if($profesor->real)
+                $profesor->name = $profesor->real->name;
+            $profesores->push($profesor);
+        }
         $auxiliares = collect();
         if($seccion->curso->id_tipo == 3){
             foreach($seccion->curso->secciones as $aux_sec){
