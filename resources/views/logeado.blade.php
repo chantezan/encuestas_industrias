@@ -329,10 +329,10 @@
                                             promedio = promedio1.respuesta;
                                         }
 
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                            '<div class="col-md-8"><div id="n' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="p' + profesor.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                            '<div class="col-md-8"><div id="p' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
                                         Morris.Bar({
-                                            element: 'n' + profesor.id,
+                                            element: 'p' + profesor.id,
                                             data: [
                                                 {
                                                     y: 'Muy de \nacuerdo',
@@ -371,7 +371,7 @@
                                                 return row.y + " : " + row.b + "\n porcentaje\n : " + row.a;
                                             }
                                         });
-                                        $('#n' + profesor.id).parent().hide();
+                                        $('#p' + profesor.id).parent().hide();
                                     }) // termina resumen de profesores
                                 }
                                 if (index >= 2 && index <= 5) {
@@ -849,10 +849,10 @@
                                             promedio = promedio1.respuesta;
                                         }
 
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                            '<div class="col-md-8"><div id="n' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="p' + profesor.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                            '<div class="col-md-8"><div id="p' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
                                         Morris.Bar({
-                                            element: 'n' + profesor.id,
+                                            element: 'p' + profesor.id,
                                             data: [
                                                 {
                                                     y: 'Muy de \nacuerdo',
@@ -891,7 +891,7 @@
                                                 return row.y + " : " + row.b + "\n porcentaje\n : " + row.a;
                                             }
                                         });
-                                        $('#n' + profesor.id).parent().hide();
+                                        $('#p' + profesor.id).parent().hide();
                                     }) // termina resumen de profesores
                                 }
                                 if (index >= 2 && index <= 6) {
