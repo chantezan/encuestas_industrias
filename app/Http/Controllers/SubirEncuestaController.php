@@ -118,7 +118,7 @@ class SubirEncuestaController extends Controller
                 }
 
                 if(!array_key_exists($nombre_aux,$row->toArray())){
-                    //dd($nombre_aux);
+                    dd($nombre_aux);
                     $request->session()->flash('fallo', "Error en el formato.");
                     return redirect()->back();
                 }

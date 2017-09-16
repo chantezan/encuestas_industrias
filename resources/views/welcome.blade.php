@@ -349,7 +349,7 @@
                                     var aux = pregunta.nombre;
 
                                     $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                        '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
+                                        '<div class="col-md-8"><div id="n' + pregunta.id + '" ></div></div></div>');
 
                                     $('#n' + pregunta.id).parent().hide();
                                 }
@@ -368,7 +368,7 @@
                                     var aux = "Resumen Dimension General";
 
                                     $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                        '<div class="col-md-8"><div id="n" style="height:300px; width:100%"></div></div></div>');
+                                        '<div class="col-md-8"><div id="n"></div></div></div>');
 
                                     $('#n').parent().hide();
                                     total_5 = 0;
@@ -418,7 +418,7 @@
                                     var aux = pregunta.nombre;
 
                                     $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                        '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
+                                        '<div class="col-md-8"><div id="n' + pregunta.id + '" ></div></div></div>');
 
                                     $('#n' + pregunta.id).parent().hide()
                                 }
@@ -437,7 +437,7 @@
                                     var aux = "Resumen Dimensión Evaluaciones";
 
                                     $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                        '<div class="col-md-8"><div id="t" style="height:300px; width:100%"></div></div></div>');
+                                        '<div class="col-md-8"><div id="t"></div></div></div>');
 
                                     $('#t').parent().hide();
                                 }
@@ -516,12 +516,11 @@
                                         }
 
                                         $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                            '<div class="col-md-8"><div id="n' + auxiliar.id + '" style="height:300px; width:100%"></div></div></div>');
+                                            '<div class="col-md-8"><div id="n' + auxiliar.id + '"></div></div></div>');
 
                                         $('#n' + auxiliar.id).parent().hide();
                                     }) // termina resumen de profesores
                                 }
-
                             }
                         });
                     } else {
