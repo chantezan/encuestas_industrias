@@ -520,10 +520,10 @@
                                     }
                                     var aux = pregunta.nombre;
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                        '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="e' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        '<div class="col-md-8"><div id="e' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
-                                        element: 'n' + pregunta.id,
+                                        element: 'e' + pregunta.id,
                                         data: [
                                             {y: 'Muy de \nacuerdo', a: (val5 / total * 100).toFixed(2), b: val5},
                                             {y: 'De \nacuerdo', a: (val4 / total * 100).toFixed(2), b: val4},
@@ -546,7 +546,7 @@
                                             return row.y + " : " + row.b + "\n porcentaje\n : " + row.a;
                                         }
                                     });
-                                    $('#n' + pregunta.id).parent().hide()
+                                    $('#e' + pregunta.id).parent().hide()
                                 }
                                 if (index == 8) {
                                     var total = total_5*1 + total_4*1 + total_3*1 + total_2*1 + total_1*1;
@@ -1040,10 +1040,10 @@
                                     }
                                     var aux = pregunta.nombre;
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                        '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="e' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        '<div class="col-md-8"><div id="e' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
-                                        element: 'n' + pregunta.id,
+                                        element: 'e' + pregunta.id,
                                         data: [
                                             {y: 'Muy de \nacuerdo', a: (val5 / total * 100).toFixed(2), b: val5},
                                             {y: 'De \nacuerdo', a: (val4 / total * 100).toFixed(2), b: val4},
@@ -1066,7 +1066,7 @@
                                             return row.y + " : " + row.b + "\n porcentaje\n : " + row.a;
                                         }
                                     });
-                                    $('#n' + pregunta.id).parent().hide()
+                                    $('#e' + pregunta.id).parent().hide()
                                 }
                                 if (index == 9) {
                                     var total = total_5*1 + total_4*1 + total_3*1 + total_2*1 + total_1*1;
