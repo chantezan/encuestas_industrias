@@ -20,32 +20,28 @@ class GraficosController extends Controller
 
     public function getSeccion(Request $request){
         $seccion = Seccion::with(['auxiliares','profesores','coordinadores','respuestas','curso'])->find($request['seccion']);
-        foreach ($seccion->curso->secciones as $seccion2){
-            $auxiliares = collect();
-            if($seccion->curso->id_tipo == 3) {
-                foreach ($seccion2->curso->secciones as $seccion) {
-                    foreach ($seccion->auxiliares as $aux) {
-                        $auxiliares->push($aux);
-                    }
-                    foreach ($seccion->coordinadores as $aux) {
-                        $auxiliares->push($aux);
-                    }
+        $auxiliares = collect();
+        if($seccion->curso->id_tipo == 3) {
+            foreach ($seccion->curso->secciones as $seccion2) {
+                foreach ($seccion2->auxiliares as $aux) {
+                    $auxiliares->push($aux);
                 }
-            } else if($seccion->curso->id_tipo == 4) {
-                foreach ($seccion2->curso->secciones as $seccion) {
-                    foreach ($seccion2->auxiliares as $aux) {
-                        $auxiliares->push($aux);
-                    }
-                    foreach ($seccion->coordinadores as $aux) {
-                        $auxiliares->push($aux);
-                    }
+                foreach ($seccion2->coordinadores as $aux) {
+                    $auxiliares->push($aux);
                 }
-            } else {
-                $auxiliares = $seccion2->auxiliares;
             }
+        } else if($seccion->curso->id_tipo == 4) {
+            $auxiliares = $seccion->auxiliares;
+            foreach ($seccion->curso->secciones as $seccion2) {
+                foreach ($seccion2->coordinadores as $aux) {
+                    $auxiliares->push($aux);
+                }
+            }
+        } else {
+            $auxiliares = $seccion->auxiliares;
+        }
             $auxiliares = $auxiliares->unique('id');
             $seccion->auxiliares_all = $auxiliares->toArray();
-        }
         return $seccion;
     }
 
