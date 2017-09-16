@@ -40,7 +40,7 @@ class ExcelController extends Controller
             }
 
             if($row['profesor'] != null){
-                $profesor = User::where([['name',$row['profesor']],['id_rol',1]])->first();
+                $profesor = User::where('name',$row['profesor'])->first();
                 if($profesor == null){
                     $profesor = new User();
                     $profesor->name = $row['profesor'];
@@ -55,7 +55,7 @@ class ExcelController extends Controller
             }
 
             if($row['coordinador'] != null){
-                $profesor = User::where([['name',$row['coordinador']],['id_rol',3]])->first();
+                $profesor = User::where('name',$row['coordinador'])->first();
                 if($profesor == null){
                     $profesor = new User();
                     $profesor->name = $row['coordinador'];
@@ -70,7 +70,7 @@ class ExcelController extends Controller
             }
 
             if($row['prof._auxiliar'] != null){
-                $profesor = User::where([['name',$row['prof._auxiliar']],['id_rol',2]])->first();
+                $profesor = User::where('name',$row['prof._auxiliar'])->first();
                 if($profesor == null){
                     $profesor = new User();
                     $profesor->name = $row['prof._auxiliar'];
