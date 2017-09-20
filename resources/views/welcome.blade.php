@@ -39,7 +39,6 @@
     <![endif]-->
 
     <script src="{{ URL::asset('Horizontal/assets/js/modernizr.min.js') }}"></script>
-
 </head>
 
 
@@ -281,7 +280,7 @@
                                     }
                                     var aux = pregunta.nombre;
                                     aux = aux.replace("REEMPLAZAR", profesor.name);
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n' + profesor.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
 
                                     $('#n' + profesor.id + 'y' + pregunta.id).parent().hide();
@@ -303,7 +302,7 @@
                                             promedio = promedio1.respuesta;
                                         }
 
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="n' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
 
                                         $('#n' + profesor.id).parent().hide();
@@ -348,7 +347,7 @@
                                     }
                                     var aux = pregunta.nombre;
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n' + pregunta.id + '" ></div></div></div>');
 
                                     $('#n' + pregunta.id).parent().hide();
@@ -367,7 +366,7 @@
                                     }
                                     var aux = "Resumen Dimension General";
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n"></div></div></div>');
 
                                     $('#n').parent().hide();
@@ -417,7 +416,7 @@
                                     }
                                     var aux = pregunta.nombre;
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n' + pregunta.id + '" ></div></div></div>');
 
                                     $('#n' + pregunta.id).parent().hide()
@@ -436,7 +435,7 @@
                                     }
                                     var aux = "Resumen Dimensión Evaluaciones";
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="t"></div></div></div>');
 
                                     $('#t').parent().hide();
@@ -492,7 +491,7 @@
                                         }
                                         var aux = pregunta.nombre;
                                         aux = aux.replace("REEMPLAZAR", auxiliar.name);
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
 
                                         $('#n' + auxiliar.id + 'y' + pregunta.id).parent().hide();
@@ -515,7 +514,7 @@
                                             promedio = promedio1.respuesta;
                                         }
 
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="n' + auxiliar.id + '"></div></div></div>');
 
                                         $('#n' + auxiliar.id).parent().hide();
@@ -577,7 +576,7 @@
                                     }
                                     var aux = pregunta.nombre;
                                     aux = aux.replace("REEMPLAZAR", profesor.name);
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n' + profesor.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
 
                                     $('#n' + profesor.id + 'y' + pregunta.id).parent().hide();
@@ -599,7 +598,7 @@
                                             promedio = promedio1.respuesta;
                                         }
 
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="n' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
 
                                         $('#n' + profesor.id).parent().hide();
@@ -645,7 +644,7 @@
                                     }
                                     var aux = pregunta.nombre;
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
 
                                     $('#n' + pregunta.id).parent().hide();
@@ -664,7 +663,7 @@
                                     }
                                     var aux = "Resumen Dimension General";
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n" style="height:300px; width:100%"></div></div></div>');
 
                                     $('#n').parent().hide();
@@ -714,7 +713,7 @@
                                     }
                                     var aux = pregunta.nombre;
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
 
                                     $('#n' + pregunta.id).parent().hide()
@@ -733,7 +732,7 @@
                                     }
                                     var aux = "Resumen Dimensión Evaluaciones";
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="t" style="height:300px; width:100%"></div></div></div>');
 
                                     $('#t').parent().hide();
@@ -787,7 +786,7 @@
                                         }
                                         var aux = pregunta.nombre;
                                         aux = aux.replace("REEMPLAZAR", auxiliar.name);
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
 
                                         $('#n' + auxiliar.id + 'y' + pregunta.id).parent().hide();
@@ -840,7 +839,7 @@
                                         }
                                         var aux = pregunta.nombre;
                                         aux = aux.replace("REEMPLAZAR", auxiliar.name);
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '<br>Desviacion : ' + desviacion + '</h4></a></div>' +
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '<br>Desviacion : ' + desviacion + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
 
                                         $('#n' + auxiliar.id + 'y' + pregunta.id).parent().hide();

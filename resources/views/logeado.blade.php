@@ -39,7 +39,9 @@
     <![endif]-->
 
     <script src="{{ URL::asset('Horizontal/assets/js/modernizr.min.js') }}"></script>
-
+    <style>
+        b { cursor: pointer; cursor: hand; }
+    </style>
 </head>
 
 
@@ -228,6 +230,7 @@
                 url: '{{action('GraficosController@getSeccion')}}',
                 data: 'seccion=' + seccion,
                 success: function (data) {
+                    var contador = 1;
                     var profesores = data.profesores;
                     var auxiliares = data.auxiliares_all;
                     var respuestas = data.respuestas;
@@ -284,21 +287,30 @@
                                     }
                                     var aux = pregunta.nombre;
                                     aux = aux.replace("REEMPLAZAR", profesor.name);
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                        '<div class="col-md-8"><div id="n' + profesor.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="p' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        '<div class="col-md-8"><div id="p' + profesor.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
-                                        element: 'n' + profesor.id + 'y' + pregunta.id,
+                                        element: 'p' + profesor.id + 'y' + pregunta.id,
                                         data: [
-                                            {y: 'Muy de \nacuerdo', a: (val5 / total * 100).toFixed(2), b: val5},
-                                            {y: 'De \nacuerdo', a: (val4 / total * 100).toFixed(2), b: val4},
+                                            {y: 'Muy en \ndesacuerdo', a: (val1 / total * 100).toFixed(2), b: val1},
+                                            {y: 'En \ndesacuerdo', a: (val2 / total * 100).toFixed(2), b: val2},
                                             {
                                                 y: 'Ni de acuerdo \nni en desacuerdo',
                                                 a: (val3 / total * 100).toFixed(2),
                                                 b: val3
                                             },
-                                            {y: 'En \ndesacuerdo', a: (val2 / total * 100).toFixed(2), b: val2},
-                                            {y: 'Muy en \ndesacuerdo', a: (val1 / total * 100).toFixed(2), b: val1}
+                                            {y: 'De \nacuerdo', a: (val4 / total * 100).toFixed(2), b: val4},
+                                            {y: 'Muy de \nacuerdo', a: (val5 / total * 100).toFixed(2), b: val5},
+
                                         ],
+                                        barColors: function (row, series, type) {
+
+                                            if(row.label == 'Muy en \ndesacuerdo') return "#AD1D28";
+                                            else if(row.label == 'En \ndesacuerdo') return "#F7830F";
+                                            else if(row.label == 'Ni de acuerdo \nni en desacuerdo') return "#fec04c";
+                                            else if(row.label == 'De \nacuerdo') return "#D0EC1D";
+                                            else if(row.label == 'Muy de \nacuerdo') return "#1AB244";
+                                        },
                                         xkey: 'y',
                                         ykeys: ['a'],
                                         ymax: 100,
@@ -310,7 +322,7 @@
                                             return row.y + " : " + row.b + "\n porcentaje\n : " + row.a;
                                         }
                                     });
-                                    $('#n' + profesor.id + 'y' + pregunta.id).parent().hide();
+                                    $('#p' + profesor.id + 'y' + pregunta.id).parent().hide();
                                 }); //terminan graficos profesores
                             } else {
                                 if (index == 2) {
@@ -329,15 +341,26 @@
                                             promedio = promedio1.respuesta;
                                         }
 
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="p' + profesor.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="p' + profesor.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="p' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
                                         Morris.Bar({
                                             element: 'p' + profesor.id,
                                             data: [
                                                 {
-                                                    y: 'Muy de \nacuerdo',
-                                                    a: (profesor.val5 / total * 100).toFixed(2),
-                                                    b: profesor.val5
+                                                    y: 'Muy en \ndesacuerdo',
+                                                    a: (profesor.val1 / total * 100).toFixed(2),
+                                                    b: profesor.val1
+                                                },
+                                                {
+                                                    y: 'En \ndesacuerdo',
+                                                    a: (profesor.val2 / total * 100).toFixed(2),
+                                                    b: profesor.val2
+                                                },
+
+                                                {
+                                                    y: 'Ni de acuerdo \nni en desacuerdo',
+                                                    a: (profesor.val3 / total * 100).toFixed(2),
+                                                    b: profesor.val3
                                                 },
                                                 {
                                                     y: 'De \nacuerdo',
@@ -345,21 +368,19 @@
                                                     b: profesor.val4
                                                 },
                                                 {
-                                                    y: 'Ni de acuerdo \nni en desacuerdo',
-                                                    a: (profesor.val3 / total * 100).toFixed(2),
-                                                    b: profesor.val3
+                                                    y: 'Muy de \nacuerdo',
+                                                    a: (profesor.val5 / total * 100).toFixed(2),
+                                                    b: profesor.val5
                                                 },
-                                                {
-                                                    y: 'En \ndesacuerdo',
-                                                    a: (profesor.val2 / total * 100).toFixed(2),
-                                                    b: profesor.val2
-                                                },
-                                                {
-                                                    y: 'Muy en \ndesacuerdo',
-                                                    a: (profesor.val1 / total * 100).toFixed(2),
-                                                    b: profesor.val1
-                                                }
+
                                             ],
+                                            barColors: function (row, series, type) {
+                                                if(row.label == 'Muy en \ndesacuerdo') return "#AD1D28";
+                                                else if(row.label == 'En \ndesacuerdo') return "#F7830F";
+                                                else if(row.label == 'Ni de acuerdo \nni en desacuerdo') return "#fec04c";
+                                                else if(row.label == 'De \nacuerdo') return "#D0EC1D";
+                                                else if(row.label == 'Muy de \nacuerdo') return "#1AB244";
+                                            },
                                             xkey: 'y',
                                             ykeys: ['a'],
                                             ymax: 100,
@@ -413,17 +434,24 @@
                                     }
                                     var aux = pregunta.nombre;
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'n' + pregunta.id,
                                         data: [
-                                            {y: 'Mucha', a: (val5 / total * 100).toFixed(2), b: val5},
-                                            {y: 'Bastante', a: (val4 / total * 100).toFixed(2), b: val4},
-                                            {y: 'Poco', a: (val3 / total * 100).toFixed(2), b: val3},
+                                            {y: 'No se \nimplementó', a: (val1 / total * 100).toFixed(2), b: val1},
                                             {y: 'Nada', a: (val2 / total * 100).toFixed(2), b: val2},
-                                            {y: 'No se \nimplementó', a: (val1 / total * 100).toFixed(2), b: val1}
+                                            {y: 'Poco', a: (val3 / total * 100).toFixed(2), b: val3},
+                                            {y: 'Bastante', a: (val4 / total * 100).toFixed(2), b: val4},
+                                            {y: 'Mucha', a: (val5 / total * 100).toFixed(2), b: val5},
                                         ],
+                                        barColors: function (row, series, type) {
+                                            if(row.label == 'Nada') return "#F7830F";
+                                            else if(row.label == 'Poco') return "#fec04c";
+                                            else if(row.label == 'No se \nimplementó') return "#AD1D28";
+                                            else if(row.label == 'Bastante') return "#D0EC1D";
+                                            else if(row.label == 'Mucha') return "#1AB244";
+                                        },
                                         xkey: 'y',
                                         ykeys: ['a'],
                                         ymax: 100,
@@ -451,17 +479,25 @@
                                     }
                                     var aux = "Resumen Dimension General";
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'n',
                                         data: [
-                                            {y: 'Mucha', a: (total_5 / total * 100).toFixed(2), b: total_5},
-                                            {y: 'Bastante', a: (total_4 / total * 100).toFixed(2), b: total_4},
-                                            {y: 'Poco', a: (total_3 / total * 100).toFixed(2), b: total_3},
+                                            {y: 'No se \nimplementó', a: (total_1 / total * 100).toFixed(2), b: total_1},
                                             {y: 'Nada', a: (total_2 / total * 100).toFixed(2), b: total_2},
-                                            {y: 'No se \nimplementó', a: (total_1 / total * 100).toFixed(2), b: total_1}
+                                            {y: 'Poco', a: (total_3 / total * 100).toFixed(2), b: total_3},
+                                            {y: 'Bastante', a: (total_4 / total * 100).toFixed(2), b: total_4},
+                                            {y: 'Mucha', a: (total_5 / total * 100).toFixed(2), b: total_5},
+
                                         ],
+                                        barColors: function (row, series, type) {
+                                            if(row.label == 'Nada') return "#F7830F";
+                                            else if(row.label == 'Poco') return "#fec04c";
+                                            else if(row.label == 'No se \nimplementó') return "#AD1D28";
+                                            else if(row.label == 'Bastante') return "#D0EC1D";
+                                            else if(row.label == 'Mucha') return "#1AB244";
+                                        },
                                         xkey: 'y',
                                         ykeys: ['a'],
                                         ymax: 100,
@@ -520,21 +556,29 @@
                                     }
                                     var aux = pregunta.nombre;
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="e' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="e' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="e' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'e' + pregunta.id,
                                         data: [
-                                            {y: 'Muy de \nacuerdo', a: (val5 / total * 100).toFixed(2), b: val5},
-                                            {y: 'De \nacuerdo', a: (val4 / total * 100).toFixed(2), b: val4},
+                                            {y: 'Muy en \ndesacuerdo', a: (val1 / total * 100).toFixed(2), b: val1},
+                                            {y: 'En \ndesacuerdo', a: (val2 / total * 100).toFixed(2), b: val2},
                                             {
                                                 y: 'Ni de acuerdo \nni en desacuerdo',
                                                 a: (val3 / total * 100).toFixed(2),
                                                 b: val3
                                             },
-                                            {y: 'En \ndesacuerdo', a: (val2 / total * 100).toFixed(2), b: val2},
-                                            {y: 'Muy en \ndesacuerdo', a: (val1 / total * 100).toFixed(2), b: val1}
+                                            {y: 'Muy de \nacuerdo', a: (val5 / total * 100).toFixed(2), b: val5},
+                                            {y: 'De \nacuerdo', a: (val4 / total * 100).toFixed(2), b: val4},
+
                                         ],
+                                        barColors: function (row, series, type) {
+                                            if(row.label == 'Muy en \ndesacuerdo') return "#AD1D28";
+                                            else if(row.label == 'En \ndesacuerdo') return "#F7830F";
+                                            else if(row.label == 'Ni de acuerdo \nni en desacuerdo') return "#fec04c";
+                                            else if(row.label == 'De \nacuerdo') return "#D0EC1D";
+                                            else if(row.label == 'Muy de \nacuerdo') return "#1AB244";
+                                        },
                                         xkey: 'y',
                                         ykeys: ['a'],
                                         ymax: 100,
@@ -562,25 +606,35 @@
                                     }
                                     var aux = "Resumen Dimensión Evaluaciones";
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="t" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 't',
                                         data: [
-                                            {y: 'Muy de \nacuerdo', a: (total_5 / total * 100).toFixed(2), b: total_5},
-                                            {y: 'De \nacuerdo', a: (total_4 / total * 100).toFixed(2), b: total_4},
+                                            {
+                                                y: 'Muy en \ndesacuerdo',
+                                                a: (total_1 / total * 100).toFixed(2),
+                                                b: total_1
+                                            },
+                                            {y: 'En \ndesacuerdo', a: (total_2 / total * 100).toFixed(2), b: total_2},
+
                                             {
                                                 y: 'Ni de acuerdo \nni en desacuerdo',
                                                 a: (total_3 / total * 100).toFixed(2),
                                                 b: total_3
                                             },
-                                            {y: 'En \ndesacuerdo', a: (total_2 / total * 100).toFixed(2), b: total_2},
-                                            {
-                                                y: 'Muy en \ndesacuerdo',
-                                                a: (total_1 / total * 100).toFixed(2),
-                                                b: total_1
-                                            }
+                                            {y: 'De \nacuerdo', a: (total_4 / total * 100).toFixed(2), b: total_4},
+
+                                            {y: 'Muy de \nacuerdo', a: (total_5 / total * 100).toFixed(2), b: total_5},
+
                                         ],
+                                        barColors: function (row, series, type) {
+                                            if(row.label == 'Muy en \ndesacuerdo') return "#AD1D28";
+                                            else if(row.label == 'En \ndesacuerdo') return "#F7830F";
+                                            else if(row.label == 'Ni de acuerdo \nni en desacuerdo') return "#fec04c";
+                                            else if(row.label == 'De \nacuerdo') return "#D0EC1D";
+                                            else if(row.label == 'Muy de \nacuerdo') return "#1AB244";
+                                        },
                                         xkey: 'y',
                                         ykeys: ['a'],
                                         ymax: 100,
@@ -645,21 +699,28 @@
                                         }
                                         var aux = pregunta.nombre;
                                         aux = aux.replace("REEMPLAZAR", auxiliar.name);
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                         Morris.Bar({
                                             element: 'n' + auxiliar.id + 'y' + pregunta.id,
                                             data: [
-                                                {y: 'Muy de \nacuerdo', a: (val5 / total * 100).toFixed(2), b: val5},
-                                                {y: 'De \nacuerdo', a: (val4 / total * 100).toFixed(2), b: val4},
+                                                {y: 'Muy en \ndesacuerdo', a: (val1 / total * 100).toFixed(2), b: val1},
+                                                {y: 'En \ndesacuerdo', a: (val2 / total * 100).toFixed(2), b: val2},
                                                 {
                                                     y: 'Ni de acuerdo \nni en desacuerdo',
                                                     a: (val3 / total * 100).toFixed(2),
                                                     b: val3
                                                 },
-                                                {y: 'En \ndesacuerdo', a: (val2 / total * 100).toFixed(2), b: val2},
-                                                {y: 'Muy en \ndesacuerdo', a: (val1 / total * 100).toFixed(2), b: val1}
+                                                {y: 'De \nacuerdo', a: (val4 / total * 100).toFixed(2), b: val4},
+                                                {y: 'Muy de \nacuerdo', a: (val5 / total * 100).toFixed(2), b: val5},
                                             ],
+                                            barColors: function (row, series, type) {
+                                                if(row.label == 'Muy en \ndesacuerdo') return "#AD1D28";
+                                                else if(row.label == 'En \ndesacuerdo') return "#F7830F";
+                                                else if(row.label == 'Ni de acuerdo \nni en desacuerdo') return "#fec04c";
+                                                else if(row.label == 'De \nacuerdo') return "#D0EC1D";
+                                                else if(row.label == 'Muy de \nacuerdo') return "#1AB244";
+                                            },
                                             xkey: 'y',
                                             ykeys: ['a'],
                                             ymax: 100,
@@ -691,25 +752,15 @@
                                             promedio = promedio1.respuesta;
                                         }
 
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
-                                            '<div class="col-md-8"><div id="n' + auxiliar.id + '" style="height:300px; width:100%"></div></div></div>');
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="a' + auxiliar.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                            '<div class="col-md-8"><div id="a' + auxiliar.id + '" style="height:300px; width:100%"></div></div></div>');
                                         Morris.Bar({
-                                            element: 'n' + auxiliar.id,
+                                            element: 'a' + auxiliar.id,
                                             data: [
                                                 {
-                                                    y: 'Muy de \nacuerdo',
-                                                    a: (auxiliar.val5 / total * 100).toFixed(2),
-                                                    b: auxiliar.val5
-                                                },
-                                                {
-                                                    y: 'De \nacuerdo',
-                                                    a: (auxiliar.val4 / total * 100).toFixed(2),
-                                                    b: auxiliar.val4
-                                                },
-                                                {
-                                                    y: 'Ni de acuerdo \nni en desacuerdo',
-                                                    a: (auxiliar.val3 / total * 100).toFixed(2),
-                                                    b: auxiliar.val3
+                                                    y: 'Muy en \ndesacuerdo',
+                                                    a: (auxiliar.val1 / total * 100).toFixed(2),
+                                                    b: auxiliar.val1
                                                 },
                                                 {
                                                     y: 'En \ndesacuerdo',
@@ -717,11 +768,29 @@
                                                     b: auxiliar.val2
                                                 },
                                                 {
-                                                    y: 'Muy en \ndesacuerdo',
-                                                    a: (auxiliar.val1 / total * 100).toFixed(2),
-                                                    b: auxiliar.val1
-                                                }
+                                                    y: 'Ni de acuerdo \nni en desacuerdo',
+                                                    a: (auxiliar.val3 / total * 100).toFixed(2),
+                                                    b: auxiliar.val3
+                                                },
+                                                {
+                                                    y: 'De \nacuerdo',
+                                                    a: (auxiliar.val4 / total * 100).toFixed(2),
+                                                    b: auxiliar.val4
+                                                },
+                                                {
+                                                    y: 'Muy de \nacuerdo',
+                                                    a: (auxiliar.val5 / total * 100).toFixed(2),
+                                                    b: auxiliar.val5
+                                                },
+
                                             ],
+                                            barColors: function (row, series, type) {
+                                                if(row.label == 'Muy en \ndesacuerdo') return "#AD1D28";
+                                                else if(row.label == 'En \ndesacuerdo') return "#F7830F";
+                                                else if(row.label == 'Ni de acuerdo \nni en desacuerdo') return "#fec04c";
+                                                else if(row.label == 'De \nacuerdo') return "#D0EC1D";
+                                                else if(row.label == 'Muy de \nacuerdo') return "#1AB244";
+                                            },
                                             xkey: 'y',
                                             ykeys: ['a'],
                                             ymax: 100,
@@ -733,18 +802,18 @@
                                                 return row.y + " : " + row.b + "\n porcentaje\n : " + row.a;
                                             }
                                         });
-                                        $('#n' + auxiliar.id).parent().hide();
+                                        $('#a' + auxiliar.id).parent().hide();
                                     }) // termina resumen de profesores
                                 }
                                 if (index >= 10 && index <= 11) {
 
                                     var aux = pregunta.nombre;
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="' + pregunta.id + '" class="mostrar"><h4>' + aux + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b></h4></a></div>' +
                                         '<div class="col-md-8"><div id="' + pregunta.id + '"></div></div></div>');
 
                                     respuestas.forEach(function (respuesta, index3) {
                                         if (respuesta.id_pregunta == pregunta.id) {
-                                            $('#' + pregunta.id).append("<h5>" + respuesta.respuesta + "<h5><br>");
+                                            $('#' + pregunta.id).append("<h5><i>"+(contador++)+": " + respuesta.respuesta + "</i><h5><br>");
                                         }
                                     });
 
@@ -805,21 +874,30 @@
                                     }
                                     var aux = pregunta.nombre;
                                     aux = aux.replace("REEMPLAZAR", profesor.name);
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n' + profesor.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'n' + profesor.id + 'y' + pregunta.id,
                                         data: [
-                                            {y: 'Muy de \nacuerdo', a: (val5 / total * 100).toFixed(2), b: val5},
-                                            {y: 'De \nacuerdo', a: (val4 / total * 100).toFixed(2), b: val4},
+                                            {y: 'Muy en \ndesacuerdo', a: (val1 / total * 100).toFixed(2), b: val1},
+                                            {y: 'En \ndesacuerdo', a: (val2 / total * 100).toFixed(2), b: val2},
+
                                             {
                                                 y: 'Ni de acuerdo \nni en desacuerdo',
                                                 a: (val3 / total * 100).toFixed(2),
                                                 b: val3
                                             },
-                                            {y: 'En \ndesacuerdo', a: (val2 / total * 100).toFixed(2), b: val2},
-                                            {y: 'Muy en \ndesacuerdo', a: (val1 / total * 100).toFixed(2), b: val1}
+                                            {y: 'De \nacuerdo', a: (val4 / total * 100).toFixed(2), b: val4},
+                                            {y: 'Muy de \nacuerdo', a: (val5 / total * 100).toFixed(2), b: val5},
+
                                         ],
+                                        barColors: function (row, series, type) {
+                                            if(row.label == 'Muy en \ndesacuerdo') return "#AD1D28";
+                                            else if(row.label == 'En \ndesacuerdo') return "#F7830F";
+                                            else if(row.label == 'Ni de acuerdo \nni en desacuerdo') return "#fec04c";
+                                            else if(row.label == 'De \nacuerdo') return "#D0EC1D";
+                                            else if(row.label == 'Muy de \nacuerdo') return "#1AB244";
+                                        },
                                         xkey: 'y',
                                         ykeys: ['a'],
                                         ymax: 100,
@@ -849,15 +927,26 @@
                                             promedio = promedio1.respuesta;
                                         }
 
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="p' + profesor.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="p' + profesor.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="p' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
                                         Morris.Bar({
                                             element: 'p' + profesor.id,
                                             data: [
                                                 {
-                                                    y: 'Muy de \nacuerdo',
-                                                    a: (profesor.val5 / total * 100).toFixed(2),
-                                                    b: profesor.val5
+                                                    y: 'Muy en \ndesacuerdo',
+                                                    a: (profesor.val1 / total * 100).toFixed(2),
+                                                    b: profesor.val1
+                                                },
+                                                {
+                                                    y: 'En \ndesacuerdo',
+                                                    a: (profesor.val2 / total * 100).toFixed(2),
+                                                    b: profesor.val2
+                                                },
+
+                                                {
+                                                    y: 'Ni de acuerdo \nni en desacuerdo',
+                                                    a: (profesor.val3 / total * 100).toFixed(2),
+                                                    b: profesor.val3
                                                 },
                                                 {
                                                     y: 'De \nacuerdo',
@@ -865,21 +954,19 @@
                                                     b: profesor.val4
                                                 },
                                                 {
-                                                    y: 'Ni de acuerdo \nni en desacuerdo',
-                                                    a: (profesor.val3 / total * 100).toFixed(2),
-                                                    b: profesor.val3
+                                                    y: 'Muy de \nacuerdo',
+                                                    a: (profesor.val5 / total * 100).toFixed(2),
+                                                    b: profesor.val5
                                                 },
-                                                {
-                                                    y: 'En \ndesacuerdo',
-                                                    a: (profesor.val2 / total * 100).toFixed(2),
-                                                    b: profesor.val2
-                                                },
-                                                {
-                                                    y: 'Muy en \ndesacuerdo',
-                                                    a: (profesor.val1 / total * 100).toFixed(2),
-                                                    b: profesor.val1
-                                                }
+
                                             ],
+                                            barColors: function (row, series, type) {
+                                                if(row.label == 'Muy en \ndesacuerdo') return "#AD1D28";
+                                                else if(row.label == 'En \ndesacuerdo') return "#F7830F";
+                                                else if(row.label == 'Ni de acuerdo \nni en desacuerdo') return "#fec04c";
+                                                else if(row.label == 'De \nacuerdo') return "#D0EC1D";
+                                                else if(row.label == 'Muy de \nacuerdo') return "#1AB244";
+                                            },
                                             xkey: 'y',
                                             ykeys: ['a'],
                                             ymax: 100,
@@ -933,17 +1020,24 @@
                                     }
                                     var aux = pregunta.nombre;
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'n' + pregunta.id,
                                         data: [
-                                            {y: 'Mucha', a: (val5 / total * 100).toFixed(2), b: val5},
-                                            {y: 'Bastante', a: (val4 / total * 100).toFixed(2), b: val4},
-                                            {y: 'Poco', a: (val3 / total * 100).toFixed(2), b: val3},
+                                            {y: 'No se \nimplementó', a: (val1 / total * 100).toFixed(2), b: val1},
                                             {y: 'Nada', a: (val2 / total * 100).toFixed(2), b: val2},
-                                            {y: 'No se \nimplementó', a: (val1 / total * 100).toFixed(2), b: val1}
+                                            {y: 'Poco', a: (val3 / total * 100).toFixed(2), b: val3},
+                                            {y: 'Bastante', a: (val4 / total * 100).toFixed(2), b: val4},
+                                            {y: 'Mucha', a: (val5 / total * 100).toFixed(2), b: val5},
                                         ],
+                                        barColors: function (row, series, type) {
+                                            if(row.label == 'Nada') return "#F7830F";
+                                            else if(row.label == 'Poco') return "#fec04c";
+                                            else if(row.label == 'No se \nimplementó') return "#AD1D28";
+                                            else if(row.label == 'Bastante') return "#D0EC1D";
+                                            else if(row.label == 'Mucha') return "#1AB244";
+                                        },
                                         xkey: 'y',
                                         ykeys: ['a'],
                                         ymax: 100,
@@ -971,17 +1065,25 @@
                                     }
                                     var aux = "Resumen Dimension General";
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'n',
                                         data: [
-                                            {y: 'Mucha', a: (total_5 / total * 100).toFixed(2), b: total_5},
-                                            {y: 'Bastante', a: (total_4 / total * 100).toFixed(2), b: total_4},
-                                            {y: 'Poco', a: (total_3 / total * 100).toFixed(2), b: total_3},
+                                            {y: 'No se \nimplementó', a: (total_1 / total * 100).toFixed(2), b: total_1},
                                             {y: 'Nada', a: (total_2 / total * 100).toFixed(2), b: total_2},
-                                            {y: 'No se \nimplementó', a: (total_1 / total * 100).toFixed(2), b: total_1}
+
+                                            {y: 'Poco', a: (total_3 / total * 100).toFixed(2), b: total_3},
+                                            {y: 'Bastante', a: (total_4 / total * 100).toFixed(2), b: total_4},
+                                            {y: 'Mucha', a: (total_5 / total * 100).toFixed(2), b: total_5},
                                         ],
+                                        barColors: function (row, series, type) {
+                                            if(row.label == 'Nada') return "#F7830F";
+                                            else if(row.label == 'Poco') return "#fec04c";
+                                            else if(row.label == 'No se \nimplementó') return "#AD1D28";
+                                            else if(row.label == 'Bastante') return "#D0EC1D";
+                                            else if(row.label == 'Mucha') return "#1AB244";
+                                        },
                                         xkey: 'y',
                                         ykeys: ['a'],
                                         ymax: 100,
@@ -1040,21 +1142,30 @@
                                     }
                                     var aux = pregunta.nombre;
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="e' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="e' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="e' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'e' + pregunta.id,
                                         data: [
-                                            {y: 'Muy de \nacuerdo', a: (val5 / total * 100).toFixed(2), b: val5},
-                                            {y: 'De \nacuerdo', a: (val4 / total * 100).toFixed(2), b: val4},
+                                            {y: 'Muy en \ndesacuerdo', a: (val1 / total * 100).toFixed(2), b: val1},
+                                            {y: 'En \ndesacuerdo', a: (val2 / total * 100).toFixed(2), b: val2},
+
                                             {
                                                 y: 'Ni de acuerdo \nni en desacuerdo',
                                                 a: (val3 / total * 100).toFixed(2),
                                                 b: val3
                                             },
-                                            {y: 'En \ndesacuerdo', a: (val2 / total * 100).toFixed(2), b: val2},
-                                            {y: 'Muy en \ndesacuerdo', a: (val1 / total * 100).toFixed(2), b: val1}
+                                            {y: 'De \nacuerdo', a: (val4 / total * 100).toFixed(2), b: val4},
+                                            {y: 'Muy de \nacuerdo', a: (val5 / total * 100).toFixed(2), b: val5},
+
                                         ],
+                                        barColors: function (row, series, type) {
+                                            if(row.label == 'Muy en \ndesacuerdo') return "#AD1D28";
+                                            else if(row.label == 'En \ndesacuerdo') return "#F7830F";
+                                            else if(row.label == 'Ni de acuerdo \nni en desacuerdo') return "#fec04c";
+                                            else if(row.label == 'De \nacuerdo') return "#D0EC1D";
+                                            else if(row.label == 'Muy de \nacuerdo') return "#1AB244";
+                                        },
                                         xkey: 'y',
                                         ykeys: ['a'],
                                         ymax: 100,
@@ -1082,25 +1193,33 @@
                                     }
                                     var aux = "Resumen Dimensión Evaluaciones";
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="t" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 't',
                                         data: [
-                                            {y: 'Muy de \nacuerdo', a: (total_5 / total * 100).toFixed(2), b: total_5},
+                                            {
+                                                y: 'Muy en \ndesacuerdo',
+                                                a: (total_1 / total * 100).toFixed(2),
+                                                b: total_1
+                                            },
+                                            {y: 'En \ndesacuerdo', a: (total_2 / total * 100).toFixed(2), b: total_2},
                                             {y: 'De \nacuerdo', a: (total_4 / total * 100).toFixed(2), b: total_4},
                                             {
                                                 y: 'Ni de acuerdo \nni en desacuerdo',
                                                 a: (total_3 / total * 100).toFixed(2),
                                                 b: total_3
                                             },
-                                            {y: 'En \ndesacuerdo', a: (total_2 / total * 100).toFixed(2), b: total_2},
-                                            {
-                                                y: 'Muy en \ndesacuerdo',
-                                                a: (total_1 / total * 100).toFixed(2),
-                                                b: total_1
-                                            }
+                                            {y: 'De \nacuerdo', a: (total_4 / total * 100).toFixed(2), b: total_4},
+                                            {y: 'Muy de \nacuerdo', a: (total_5 / total * 100).toFixed(2), b: total_5},
                                         ],
+                                        barColors: function (row, series, type) {
+                                            if(row.label == 'Muy en \ndesacuerdo') return "#AD1D28";
+                                            else if(row.label == 'En \ndesacuerdo') return "#F7830F";
+                                            else if(row.label == 'Ni de acuerdo \nni en desacuerdo') return "#fec04c";
+                                            else if(row.label == 'De \nacuerdo') return "#D0EC1D";
+                                            else if(row.label == 'Muy de \nacuerdo') return "#1AB244";
+                                        },
                                         xkey: 'y',
                                         ykeys: ['a'],
                                         ymax: 100,
@@ -1163,21 +1282,29 @@
                                         }
                                         var aux = pregunta.nombre;
                                         aux = aux.replace("REEMPLAZAR", auxiliar.name);
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                         Morris.Bar({
                                             element: 'n' + auxiliar.id + 'y' + pregunta.id,
                                             data: [
-                                                {y: 'Muy de \nacuerdo', a: (val5 / total * 100).toFixed(2), b: val5},
-                                                {y: 'De \nacuerdo', a: (val4 / total * 100).toFixed(2), b: val4},
+                                                {y: 'Muy en \ndesacuerdo', a: (val1 / total * 100).toFixed(2), b: val1},
+                                                {y: 'En \ndesacuerdo', a: (val2 / total * 100).toFixed(2), b: val2},
+
                                                 {
                                                     y: 'Ni de acuerdo \nni en desacuerdo',
                                                     a: (val3 / total * 100).toFixed(2),
                                                     b: val3
                                                 },
-                                                {y: 'En \ndesacuerdo', a: (val2 / total * 100).toFixed(2), b: val2},
-                                                {y: 'Muy en \ndesacuerdo', a: (val1 / total * 100).toFixed(2), b: val1}
+                                                {y: 'De \nacuerdo', a: (val4 / total * 100).toFixed(2), b: val4},
+                                                {y: 'Muy de \nacuerdo', a: (val5 / total * 100).toFixed(2), b: val5},
                                             ],
+                                            barColors: function (row, series, type) {
+                                                if(row.label == 'Muy en \ndesacuerdo') return "#AD1D28";
+                                                else if(row.label == 'En \ndesacuerdo') return "#F7830F";
+                                                else if(row.label == 'Ni de acuerdo \nni en desacuerdo') return "#fec04c";
+                                                else if(row.label == 'De \nacuerdo') return "#D0EC1D";
+                                                else if(row.label == 'Muy de \nacuerdo') return "#1AB244";
+                                            },
                                             xkey: 'y',
                                             ykeys: ['a'],
                                             ymax: 100,
@@ -1240,19 +1367,28 @@
                                         }
                                         var aux = pregunta.nombre;
                                         aux = aux.replace("REEMPLAZAR", auxiliar.name);
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4>' + aux + '<br>Respuesta : ' + promedio + '<br>Desviacion : ' + desviacion + '</h4></a></div>' +
+                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '<br>Desviacion : ' + desviacion + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                         Morris.Bar({
                                             element: 'n' + auxiliar.id + 'y' + pregunta.id,
                                             data: [
-                                                {y: '7', a: val7},
-                                                {y: '6', a: val6},
-                                                {y: '5', a: val5},
-                                                {y: '4', a: val4},
-                                                {y: '3', a: val3},
+                                                {y: '1', a: val1},
                                                 {y: '2', a: val2},
-                                                {y: '1', a: val1}
+                                                {y: '3', a: val3},
+                                                {y: '4', a: val4},
+                                                {y: '5', a: val5},
+                                                {y: '6', a: val6},
+                                                {y: '7', a: val7},
                                             ],
+                                            barColors: function (row, series, type) {
+                                                if(row.label == '1') return "#AD1D28";
+                                                else if(row.label == '2') return "#F7830F";
+                                                else if(row.label == '3') return "#fec04c";
+                                                else if(row.label == '4') return "#f0f586";
+                                                else if(row.label == '5') return "#D0EC1D";
+                                                else if(row.label == '6') return "#cdd60d";
+                                                else if(row.label == '7') return "#1AB244";
+                                            },
                                             xkey: 'y',
                                             ykeys: ['a'],
                                             ymax: 7,
@@ -1272,11 +1408,11 @@
                                 if (index >= 11 && index <= 12) {
 
                                     var aux = pregunta.nombre;
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="' + pregunta.id + '" class="mostrar"><h4>' + aux + '</h4></a></div>' +
+                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b></h4></a></div>' +
                                         '<div class="col-md-8"><div id="' + pregunta.id + '"></div></div></div>');
                                     respuestas.forEach(function (respuesta, index3) {
                                         if (respuesta.id_pregunta == pregunta.id) {
-                                            $('#' + pregunta.id).append("<h5>" + respuesta.respuesta + "<h5><br>");
+                                            $('#' + pregunta.id).append("<h5><i>" +(contador++)+": " + respuesta.respuesta + "</i><h5><br>");
                                         }
                                     });
 

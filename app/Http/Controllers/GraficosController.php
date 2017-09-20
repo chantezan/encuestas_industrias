@@ -91,7 +91,22 @@ class GraficosController extends Controller
                 }
                 $seccion2->auxiliares_all = $auxiliares->toArray();
             }
-
+            foreach($cursos as $curso){
+                if($curso->id_tipo != 3 && $curso->id_tipo != 4) {
+                    foreach ($curso->secciones as $key => $seccion2) {
+                        $esta = false;
+                        foreach ($usuarios->usuarios as $usuario) {
+                            if ($usuario->secciones->find($seccion2->id)) ;
+                            $esta = true;
+                        }
+                        if ($usuarios->secciones->find($seccion2->id))
+                            $esta = true;
+                        if (!$esta) {
+                            $curso->secciones->forget($key);
+                        }
+                    }
+                }
+            }
         }
 
         return view('logeado',['cursos' => $cursos]);
