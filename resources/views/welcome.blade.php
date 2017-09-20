@@ -187,12 +187,6 @@
 
 <script>
     jQuery(document).ready(function() {
-        $("#respuestas").on('click','.mostrar',function () {
-            if($("#"+$(this).data('pregunta')).parent().is(':visible'))
-                $("#"+$(this).data('pregunta')).parent().hide();
-            else
-                $("#"+$(this).data('pregunta')).parent().show();
-        });
 
 
         $("[name='curso']").change(function(){

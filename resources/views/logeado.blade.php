@@ -250,9 +250,12 @@
             $("#auxiliares").html("");
             $("#comentarios").html("");
             var secciones = $("[name='curso'] option:selected").data('secciones');
+            console.log(secciones);
             $("[name='seccion'] ").append('<option value="">Seleccione una unidad</option>');
             secciones.forEach(function (item,index) {
-                $("[name='seccion'] ").append('<option value='+item.id+'>'+item.numero+'</option>');
+                if (item.esta) {
+                    $("[name='seccion'] ").append('<option value=' + item.id + '>' + item.numero + '</option>');
+                }
             });
             $("select").select2();
         });
