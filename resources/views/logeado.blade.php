@@ -85,12 +85,58 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div id="respuestas">
+                </div>
+            </div>
 
+            <div id="respuestas">
+                <div class="panel panel-color panel-inverse">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Profesores</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div id="profesores"></div>
                         </div>
-
-
+                    </div>
+                </div>
+                <div class="panel panel-color panel-inverse">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Dimension General</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div id="dimension_general"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-color panel-inverse">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Evaluaciones</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div id="evaluacion"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-color panel-inverse">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Auxiliares</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div id="auxiliares"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-color panel-inverse">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Comentarios</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div id="comentarios"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -198,12 +244,17 @@
 
         $("[name='curso']").change(function(){
             $("[name='seccion'] ").html("");
+            $("#profesores").html("");
+            $("#dimension_general").html("");
+            $("#evaluacion").html("");
+            $("#auxiliares").html("");
+            $("#comentarios").html("");
             var secciones = $("[name='curso'] option:selected").data('secciones');
             $("[name='seccion'] ").append('<option value="">Seleccione una unidad</option>');
             secciones.forEach(function (item,index) {
                 $("[name='seccion'] ").append('<option value='+item.id+'>'+item.numero+'</option>');
             });
-
+            $("select").select2();
         });
 
         $("#respuestas").on('click','.mostrar',function () {
@@ -214,7 +265,11 @@
         });
 
         $("[name='seccion']").change(function(){
-            $("#respuestas").html("");
+            $("#profesores").html("");
+            $("#dimension_general").html("");
+            $("#evaluacion").html("");
+            $("#auxiliares").html("");
+            $("#comentarios").html("");
             var total_1 = 0;
             var total_2 = 0;
             var total_3 = 0;
@@ -287,7 +342,7 @@
                                     }
                                     var aux = pregunta.nombre;
                                     aux = aux.replace("REEMPLAZAR", profesor.name);
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="p' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#profesores").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="p' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="p' + profesor.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'p' + profesor.id + 'y' + pregunta.id,
@@ -341,7 +396,7 @@
                                             promedio = promedio1.respuesta;
                                         }
 
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="p' + profesor.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        $("#profesores").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="p' + profesor.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="p' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
                                         Morris.Bar({
                                             element: 'p' + profesor.id,
@@ -434,7 +489,7 @@
                                     }
                                     var aux = pregunta.nombre;
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#dimension_general").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'n' + pregunta.id,
@@ -479,7 +534,7 @@
                                     }
                                     var aux = "Resumen Dimension General";
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#dimension_general").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'n',
@@ -556,7 +611,7 @@
                                     }
                                     var aux = pregunta.nombre;
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="e' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#evaluacion").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="e' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="e' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'e' + pregunta.id,
@@ -606,7 +661,7 @@
                                     }
                                     var aux = "Resumen Dimensión Evaluaciones";
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#evaluacion").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="t" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 't',
@@ -699,7 +754,7 @@
                                         }
                                         var aux = pregunta.nombre;
                                         aux = aux.replace("REEMPLAZAR", auxiliar.name);
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        $("#auxiliares").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                         Morris.Bar({
                                             element: 'n' + auxiliar.id + 'y' + pregunta.id,
@@ -752,7 +807,7 @@
                                             promedio = promedio1.respuesta;
                                         }
 
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="a' + auxiliar.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        $("#auxiliares").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="a' + auxiliar.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="a' + auxiliar.id + '" style="height:300px; width:100%"></div></div></div>');
                                         Morris.Bar({
                                             element: 'a' + auxiliar.id,
@@ -808,7 +863,7 @@
                                 if (index >= 10 && index <= 11) {
 
                                     var aux = pregunta.nombre;
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b></h4></a></div>' +
+                                    $("#comentarios").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b></h4></a></div>' +
                                         '<div class="col-md-8"><div id="' + pregunta.id + '"></div></div></div>');
 
                                     respuestas.forEach(function (respuesta, index3) {
@@ -874,7 +929,7 @@
                                     }
                                     var aux = pregunta.nombre;
                                     aux = aux.replace("REEMPLAZAR", profesor.name);
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#profesores").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + profesor.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n' + profesor.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'n' + profesor.id + 'y' + pregunta.id,
@@ -927,7 +982,7 @@
                                             promedio = promedio1.respuesta;
                                         }
 
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="p' + profesor.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        $("#profesores").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="p' + profesor.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="p' + profesor.id + '" style="height:300px; width:100%"></div></div></div>');
                                         Morris.Bar({
                                             element: 'p' + profesor.id,
@@ -1020,7 +1075,7 @@
                                     }
                                     var aux = pregunta.nombre;
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#dimension_general").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'n' + pregunta.id,
@@ -1065,7 +1120,7 @@
                                     }
                                     var aux = "Resumen Dimension General";
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#dimension_general").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="n" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'n',
@@ -1142,7 +1197,7 @@
                                     }
                                     var aux = pregunta.nombre;
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="e' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#evaluacion").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="e' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="e' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 'e' + pregunta.id,
@@ -1193,7 +1248,7 @@
                                     }
                                     var aux = "Resumen Dimensión Evaluaciones";
 
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                    $("#evaluacion").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="t" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                         '<div class="col-md-8"><div id="t" style="height:300px; width:100%"></div></div></div>');
                                     Morris.Bar({
                                         element: 't',
@@ -1282,7 +1337,7 @@
                                         }
                                         var aux = pregunta.nombre;
                                         aux = aux.replace("REEMPLAZAR", auxiliar.name);
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
+                                        $("#auxiliares").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                         Morris.Bar({
                                             element: 'n' + auxiliar.id + 'y' + pregunta.id,
@@ -1367,7 +1422,7 @@
                                         }
                                         var aux = pregunta.nombre;
                                         aux = aux.replace("REEMPLAZAR", auxiliar.name);
-                                        $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '<br>Desviacion : ' + desviacion + '</h4></a></div>' +
+                                        $("#auxiliares").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="n' + auxiliar.id + 'y' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b><br>Respuesta : ' + promedio + '<br>Desviacion : ' + desviacion + '</h4></a></div>' +
                                             '<div class="col-md-8"><div id="n' + auxiliar.id + 'y' + pregunta.id + '" style="height:300px; width:100%"></div></div></div>');
                                         Morris.Bar({
                                             element: 'n' + auxiliar.id + 'y' + pregunta.id,
@@ -1408,7 +1463,7 @@
                                 if (index >= 11 && index <= 12) {
 
                                     var aux = pregunta.nombre;
-                                    $("#respuestas").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b></h4></a></div>' +
+                                    $("#comentarios").append('<div class="row"><div class="col-md-12"><a type="button" data-pregunta="' + pregunta.id + '" class="mostrar"><h4><b>' + aux + '</b></h4></a></div>' +
                                         '<div class="col-md-8"><div id="' + pregunta.id + '"></div></div></div>');
                                     respuestas.forEach(function (respuesta, index3) {
                                         if (respuesta.id_pregunta == pregunta.id) {
