@@ -93,12 +93,10 @@ class GraficosController extends Controller
             }
 
             foreach($cursos as $curso){
-
                 if($curso->id_tipo != 3 && $curso->id_tipo != 4) {
-                    $i = 0;
 
                     foreach ($curso->secciones as $key => $seccion2) {
-                        $i++;
+
                         $esta = false;
                         foreach ($usuarios->usuarios as $usuario) {
                             if ($usuario->secciones->find($seccion2->id)) ;
@@ -113,7 +111,11 @@ class GraficosController extends Controller
                         }
                     }
                 }
-
+                else{
+                    foreach ($curso->secciones as $key => $seccion2) {
+                        $curso->secciones[$key]->esta = true;
+                    }
+                }
             }
         }
         //dd($cursos->toArray());
